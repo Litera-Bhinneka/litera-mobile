@@ -1,5 +1,5 @@
 # Litera - Mobile
-Aplikasi pertukaran buku berbasis website dengan fitur daftar katalog buku, review buku, permintaan pertukaran buku secara online, rekomendasi buku, dan informasi pengguna. 
+Aplikasi pertukaran buku cross platform dengan fitur daftar katalog buku, review buku, permintaan pertukaran buku secara online, rekomendasi buku, dan informasi pengguna. 
 
 ## Anggota Kelompok👥
 - Andhika Reihan Hervito (2206826324)
@@ -26,7 +26,7 @@ Pada halaman ini, terdapat formulir untuk masuk ke sistem aplikasi, yang dapat d
 Dalam modul `Book Catalog`, pengguna dapat menjelajahi daftar buku yang tersedia untuk pertukaran dan melakukan pencarian berdasarkan judul, penulis, atau kategori. Mereka memiliki akses ke informasi detail buku, termasuk deskripsi, penulis, dan status ketersediaan. Pengguna dapat menambahkan buku yang tidak terdapat katalog. Di sisi lain, admin memiliki kontrol penuh atas katalog buku dengan kemampuan untuk menambahkan buku baru, mengelola status ketersediaan buku, dan menghapus buku dari katalog.
 
 ### 4. Book Exchange - Muhammad Raihan Akbar
-Dalam modul `Book Exchange`, pengguna memiliki kemampuan untuk membuat permintaan pertukaran buku dengan pengguna lain melalui sistem permintaan online. Pengguna mengisi detail buku yang ingin ditukar dan mengirimkan permintaan kepada pemilik buku yang diinginkan. Setelahnya, pengguna dapat melihat permintaan yang diterima dan memiliki opsi untuk menerima atau menolaknya. Jika permintaan diterima, pertukaran buku dapat dilakukan dengan pengguna yang diminta. Pengguna yang menerima permintaan harus mengonfirmasi pertukaran, mengikuti petunjuk langkah demi langkah yang diberikan oleh sistem, termasuk lokasi pertemuan, waktu, dan instruksi khusus jika ada.
+Dalam modul `Book Exchange`, pengguna memiliki kemampuan untuk membuat permintaan pertukaran buku dengan pengguna lain melalui sistem permintaan online. Pengguna mengisi detail buku yang ingin ditukar dan mengirimkan permintaan kepada pemilik buku yang diinginkan. Setelahnya, pengguna dapat melihat permintaan yang diterima dan memiliki opsi untuk menerima atau menolaknya. Jika permintaan diterima, pertukaran buku dapat dilakukan dengan pengguna yang diminta. 
 
 ### 5. Review Buku - Ghana Ahmada Yudistira
 Dalam modul `Review Buku`, pengguna memiliki beberapa fungsi penting. Pertama, mereka dapat melihat semua ulasan dan komentar pengguna lain mengenai buku tertentu, termasuk penilaian bintang, memberi mereka wawasan sebelum membaca buku tersebut. Pengguna juga dapat menulis ulasan dan memberikan penilaian bintang terhadap buku yang telah mereka baca, memberikan komentar, kesan, serta saran kepada pengguna lain yang mungkin tertarik dengan buku tersebut. 
@@ -44,7 +44,7 @@ User memiliki otoritas untuk mengakses welcome page, menambahkan buku ke katalog
 
 ### 2. Admin
 
-Admin atau administrator berperan sebagai pemegang kendali website dan memiliki akses penuh untuk memodifikasi buku, rekomendasi, dan melihat user database melalui dashboard admin.
+Admin atau administrator berperan sebagai pemegang kendali aplikasi dan memiliki akses penuh untuk memodifikasi buku, rekomendasi, dan melihat user database melalui dashboard admin.
 
 ### 3. Guest
 
@@ -69,3 +69,5 @@ Guest atau user yang belum log in hanya memiliki kekuatan mengakses yang paling 
 ### e. Pemanggilan Fungsi:
 - Pada widget terkait dalam aplikasi, fungsi dalam `fetch.dart` dipanggil.
 - Data yang diambil dapat diolah sesuai kebutuhan pada widget tersebut.
+
+## [Berita Acara 📰](https://docs.google.com/spreadsheets/d/1RspFrYhFphz4mhpLJn2e5fJz8guZkeIloW8xSz2Bs_k/edit?usp=sharing)
