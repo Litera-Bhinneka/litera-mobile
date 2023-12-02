@@ -75,12 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                                 'password': password,
                                 });
                     
-                                if (request.loggedIn) {
+                                if (request.loggedIn) { 
                                     String message = response['message'];
                                     String uname = response['username'];
                                     Navigator.pushReplacement(
                                         context,
-                                        MaterialPageRoute(builder: (context) => MyHomePage(title: "LITERA")),
+                                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Flutter Demo Home Page')),
                                     );
                                     ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
@@ -111,10 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {
                           // Navigate to the RegisterPage when the "Create New Account?" link is pressed
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => RegisterPage()),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage()),
+                          );
                         },
                         child: Text('Create New Account?'),
                       ),
