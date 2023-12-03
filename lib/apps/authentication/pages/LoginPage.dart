@@ -1,5 +1,6 @@
 import 'package:litera_mobile/apps/authentication/pages/RegisterPage.dart';
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/components/Drawer.dart';
 import 'package:litera_mobile/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                     String uname = response['username'];
                                     Navigator.pushReplacement(
                                         context,
-                                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Flutter Demo Home Page')),
+                                        MaterialPageRoute(builder: (context) => MyHomePage(title: "LITERA")),
                                     );
                                     ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
