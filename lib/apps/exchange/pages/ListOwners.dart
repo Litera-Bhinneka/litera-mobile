@@ -40,7 +40,7 @@ class _ListOwnersState extends State<ListOwners> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('List of Owners'),
+          title: const Text('Exchange'),
         ),
         // drawer: const LeftDrawer(),
         body: FutureBuilder(
@@ -75,7 +75,8 @@ class _ListOwnersState extends State<ListOwners> {
                                       horizontal: 16, vertical: 12),
                                   padding: const EdgeInsets.all(20.0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [

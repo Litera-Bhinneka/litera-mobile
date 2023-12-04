@@ -1,136 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:litera_mobile/apps/exchange/pages/ListOwners.dart';
+import 'package:litera_mobile/apps/review/pages/show_review.dart';
 
-// merupakan sebuah Drawer yang digunakan untuk navigasi antar page
-Drawer buildDrawer(BuildContext context) {
-  final request = context.watch<CookieRequest>();
-  return Drawer(
-      child: Container(
-    color: Colors.black,
-    child: ListView(
-      padding: const EdgeInsets.only(top: 60.0, left: 30.0),
-      // menu navigasi
-      children: [
-        ListTile(
-          title:
-              const Text('Dashboard', style: TextStyle(color: Colors.yellow)),
-          leading: const Icon(Icons.house, color: Colors.yellow),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   // MaterialPageRoute(builder: (context) => const Dashboard(title: "Wisata Nusantara",)),
-            // );
-          },
+/// Flutter code sample for [NavigationBar].
+
+class NavigationBarApp extends StatelessWidget {
+  const NavigationBarApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const NavigationExample(),
+    );
+  }
+}
+
+class NavigationExample extends StatefulWidget {
+  const NavigationExample({super.key});
+
+  @override
+  State<NavigationExample> createState() => _NavigationExampleState();
+}
+
+class _NavigationExampleState extends State<NavigationExample> {
+  int currentPageIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Scaffold(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: Colors.amber,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.chrome_reader_mode),
+            icon: Icon(Icons.chrome_reader_mode_outlined),
+            label: 'Catalog',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.recommend),
+            icon: Icon(Icons.recommend_outlined),
+            label: 'Recommendation',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.handshake),
+            icon: Icon(Icons.handshake_outlined),
+            label: 'Exchange',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
+        ],
+      ),
+      body: <Widget>[
+        /// Catalog Page
+        ShowReview(book_id: 35),
+
+        /// Recommendation page
+        SampleHomePage(),
+
+        /// Exchange page
+        ListOwners(
+          id: 2,
         ),
-        Divider(color: Colors.white),
-        ListTile(
-          title:
-              const Text('Destination', style: TextStyle(color: Colors.white)),
-          leading: const Icon(Icons.tour, color: Colors.white),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   // MaterialPageRoute(builder: (context) => const DaftarDestinasi()),
-            // );
-          },
+
+        /// Profile page
+        SampleHomePage(),
+      ][currentPageIndex],
+    );
+  }
+}
+
+class SampleHomePage extends StatelessWidget {
+  const SampleHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Card(
+      shadowColor: Colors.transparent,
+      margin: const EdgeInsets.all(8.0),
+      child: SizedBox.expand(
+        child: Center(
+          child: Text(
+            'Home page',
+            style: theme.textTheme.titleLarge,
+          ),
         ),
-        Divider(color: Colors.white),
-        ListTile(
-          title: const Text('Event', style: TextStyle(color: Colors.white)),
-          leading: const Icon(Icons.event, color: Colors.white),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   // MaterialPageRoute(builder: (context) => const DaftarEvent()),
-            // );
-          },
-        ),
-        Divider(color: Colors.white),
-        ListTile(
-          title: const Text('Journey', style: TextStyle(color: Colors.white)),
-          leading: const Icon(Icons.map, color: Colors.white),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   // MaterialPageRoute(builder: (context) => const PanduanPerjalanan(title: "Journey",)),
-            // );
-          },
-        ),
-        Divider(color: Colors.white),
-        ListTile(
-          title: const Text('Story', style: TextStyle(color: Colors.white)),
-          leading: const Icon(Icons.book, color: Colors.white),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const CeritaPerjalanan(
-            //             title: "Story",
-            //           )),
-            // );
-          },
-        ),
-        Divider(color: Colors.white),
-        ListTile(
-          title: const Text('FAQ', style: TextStyle(color: Colors.white)),
-          leading: const Icon(Icons.question_answer, color: Colors.white),
-          onTap: () {
-            // Route menu ke counter
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const FAQ(
-            //             title: "FAQ",
-            //           )),
-            // );
-          },
-        ),
-        Divider(color: Colors.white),
-        // ListTile(
-        //   title: const Text('Login', style: TextStyle(color: Colors.green)),
-        //   leading: const Icon(Icons.login, color: Colors.green),
-        //   onTap: () {
-        //     // Route menu ke counter
-        //     Navigator.pushReplacement(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => const LoginPage(
-        //                 title: "Login",
-        //               )),
-        //     );
-        //   },
-        // ),
-        Divider(color: Colors.white),
-        // ListTile(
-        //   title: const Text('Log Out', style: TextStyle(color: Colors.red)),
-        //   leading: const Icon(Icons.logout, color: Colors.red),
-        //   onTap: () async {
-        //     final response = await request.logout(
-        //         "https://wisata-nusa.up.railway.app/auth-flutter/logout/");
-        //     if (response['status']) {
-        //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //         content: Text("Successfully logged out!"),
-        //       ));
-        //       Navigator.pushReplacement(
-        //         context,
-        //         MaterialPageRoute(
-        //             builder: (context) => const LoginPage(title: "Login")),
-        //       );
-        //     } else {
-        //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //         content: Text("An error occured, please try again."),
-        //       ));
-        //     }
-        //   },
-        // ),
-      ],
-    ),
-  ));
+      ),
+    );
+  }
 }
