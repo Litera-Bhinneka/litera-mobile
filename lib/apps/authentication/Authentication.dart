@@ -11,7 +11,6 @@ class Authentication extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      drawer: buildDrawer(context),
       body: Center(
         child: Text('Authentication'),
         // MULAI KERJAIN DARI SINI YA
