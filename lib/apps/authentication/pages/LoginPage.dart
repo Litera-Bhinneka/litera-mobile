@@ -1,5 +1,6 @@
 import 'package:litera_mobile/apps/authentication/pages/RegisterPage.dart';
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/components/Drawer.dart';
 import 'package:litera_mobile/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                                 'password': password,
                                 });
                     
-                                if (request.loggedIn) {
+                                if (request.loggedIn) { 
                                     String message = response['message'];
                                     String uname = response['username'];
                                     Navigator.pushReplacement(
@@ -111,10 +112,10 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {
                           // Navigate to the RegisterPage when the "Create New Account?" link is pressed
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => RegisterPage()),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage()),
+                          );
                         },
                         child: Text('Create New Account?'),
                       ),
