@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
+import 'package:litera_mobile/apps/authentication/welcome/splash_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
         ),
-        home: LoginPage()
+        home: SplashScreen()
       )
     );
   }
