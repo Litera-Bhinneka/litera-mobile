@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
+import 'package:litera_mobile/apps/exchange/pages/ListOwners.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);  
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +24,11 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
         ),
-        home: LoginPage(),
-      )
+        home: const LoginPage(),
+      ),
     );
   }
 }
-
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -53,14 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ListOwners(id: 2),
+        ));
   }
 
   @override
