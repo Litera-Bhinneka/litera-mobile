@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
-import 'package:litera_mobile/apps/authentication/welcome/splash_screen.dart';
+import 'package:litera_mobile/apps/welcome/splash_screen.dart';
 import 'package:litera_mobile/components/Drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
