@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
+import 'package:litera_mobile/apps/welcome/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
