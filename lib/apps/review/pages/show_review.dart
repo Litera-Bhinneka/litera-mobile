@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -48,28 +49,31 @@ class _ShowReviewState extends State<ShowReview> {
   @override
 Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-        title: const Text('Reviews'),
-        ),
-        body: FutureBuilder(
-            future: fetchProduct(),
-            builder: (context, AsyncSnapshot snapshot) {
+        backgroundColor: Color.fromRGBO(202,209,218, 1),
+        body: SingleChildScrollView(
+        child: Column(
+          children: [
+            MyHeader(),
+            FutureBuilder(
+              future: fetchProduct(),
+              builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                    return const Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator());
                 } else {
-                    if (!snapshot.hasData) {
-                    return const Column(
-                        children: [
+                  if (!snapshot.hasData) {
+                    return Column(
+                      children: [
                         Text(
-                            "Tidak ada data item.",
-                            style:
-                                TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                          "Tidak ada data item.",
+                          style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                         ),
                         SizedBox(height: 8),
-                        ],
+                      ],
                     );
-                } else {
+                  } else {
                     return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data!.length,
                       itemBuilder: (_, index) => GestureDetector(
                         child: Container(
@@ -95,9 +99,14 @@ Widget build(BuildContext context) {
                         ),
                       ),
                     );
-                    }
+                  }
                 }
-            }));
+              },
+            ),
+          ],
+        ),
+      ),
+     );
     }
 }
 
