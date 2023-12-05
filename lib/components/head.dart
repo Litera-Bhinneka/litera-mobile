@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
+import 'package:litera_mobile/main.dart';
 
 class MyHeader extends StatelessWidget {
   const MyHeader({super.key});
@@ -28,7 +29,7 @@ class MyHeader extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ShowRecommendation()),
+                      MaterialPageRoute(builder: (context) => MyHomePage(title: "LITERA",)),
                     );
                   },
                   child: Image.asset(
@@ -43,7 +44,7 @@ class MyHeader extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ShowRecommendation()),
+                      MaterialPageRoute(builder: (context) => MyHomePage(title: "LITERA",)),
                     );
                   },
                   child: const Padding(
