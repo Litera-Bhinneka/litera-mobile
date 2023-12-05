@@ -5,6 +5,7 @@ import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
+import 'package:litera_mobile/apps/review/pages/add_review.dart';
 import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -124,6 +125,16 @@ class _ShowReviewState extends State<ShowReview> {
                     ),
                   );
 
+                  Widget addReviewButton = TextButton(
+                    onPressed: () {
+                      showDialog<String>(
+                        context: context,
+                          builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
+                      );
+                    },
+                    child: const Text('Add Review'),
+                  );
+
                   // Display review items for the remaining items in the list
                   List<Widget> reviewItems = List.generate(
                     reviews.length,
@@ -153,7 +164,7 @@ class _ShowReviewState extends State<ShowReview> {
                   return Column(
                     children: [
                       bookDetails,
-                      const Divider(), // Optional divider between book details and reviews
+                      addReviewButton, // Optional divider between book details and reviews
                       ...reviewItems,
                     ],
                   );

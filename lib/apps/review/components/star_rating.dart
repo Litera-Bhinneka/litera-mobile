@@ -50,3 +50,39 @@ class StarRating extends StatelessWidget {
     );
   }
 }
+
+class StarRatingInput extends StatefulWidget {
+  final double rating; // Rating out of 5
+  final ValueChanged<double>? onRatingChanged;
+
+  StarRatingInput({required this.rating, this.onRatingChanged});
+
+  @override
+  _StarRatingInputState createState() => _StarRatingInputState();
+}
+
+class _StarRatingInputState extends State<StarRatingInput> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        5,
+        (index) => GestureDetector(
+          onTap: () {
+            double newRating = index + 1.0;
+            if (widget.rating == newRating) {
+              // If the same star is tapped, deselect it
+              newRating = 0.0;
+            }
+            widget.onRatingChanged?.call(newRating);
+          },
+          child: Icon(
+            index < widget.rating ? FontAwesomeIcons.solidStar : FontAwesomeIcons.star,
+            color: Colors.amber,
+            size: 20.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
