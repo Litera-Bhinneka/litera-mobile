@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -70,99 +71,64 @@ class _ShowReviewState extends State<ShowReview> {
   @override
 Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-        title: const Text('Reviews'),
-        ),
-        body: FutureBuilder(
-            future: Future.wait([fetchProduct(), fetchBook()]),
-            builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        backgroundColor: Color.fromRGBO(202,209,218, 1),
+        body: SingleChildScrollView(
+        child: Column(
+          children: [
+            MyHeader(),
+            FutureBuilder(
+              future: fetchProduct(),
+              builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                    return const Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator());
                 } else {
-                    if (!snapshot.hasData) {
-                    return const Column(
-                        children: [
+                  if (!snapshot.hasData) {
+                    return Column(
+                      children: [
                         Text(
-                            "Tidak ada data item.",
-                            style:
-                                TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                          "Tidak ada data item.",
+                          style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                         ),
                         SizedBox(height: 8),
-                        ],
+                      ],
                     );
-                } else {
-                  List<Review> reviews = snapshot.data![0] as List<Review>;
-                  List<Book> book = snapshot.data![1] as List<Book>;
-
+                  } else {
                     return ListView.builder(
-                        itemCount: snapshot.data!.length + 1, // +1 for the book details
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == 0) {
-                            // Display book details as the first item in the list
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                children: [
-                                  // Assuming book.cover is a URL to the cover image
-                                  Image.network(
-                                    Uri.encodeFull(book[0].fields.imageLink),
-                                    width: 100,
-                                    height: 150,
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          book[0].fields.title,
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(book[0].fields.description),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            // Display review items for the remaining items in the list
-                            int reviewIndex = index - 1;
-                            return GestureDetector(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${reviews[reviewIndex].fields.reviewerName}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text("${reviews[reviewIndex].fields.reviewScore}"),
-                                    const SizedBox(height: 10),
-                                    Text("${reviews[reviewIndex].fields.reviewText}")
-                                  ],
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) => GestureDetector(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${snapshot.data![index].fields.reviewerName}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            );
-                          }
-                        },
-                      );
-                    }
+                              const SizedBox(height: 10),
+                              Text("${snapshot.data![index].fields.reviewScore}"),
+                              const SizedBox(height: 10),
+                              Text("${snapshot.data![index].fields.reviewText}")
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 }
-            }));
+              },
+            ),
+          ],
+        ),
+      ),
+     );
     }
 }
 

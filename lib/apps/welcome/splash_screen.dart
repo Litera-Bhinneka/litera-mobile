@@ -62,10 +62,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 'LITERA',
                 style: TextStyle(
                 color: Colors.white,
-                fontSize: 66,
+                fontSize: 70,
                 fontFamily: 'Jomhuria',
-                fontWeight: FontWeight.bold,
-                height: 0.3,
+                fontWeight: FontWeight.w400,
+                height: 0.5,
                 letterSpacing: 4.80,
                 ),
               )
