@@ -112,7 +112,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               // }));
 
                               final http.Response response = await http.post(
-                                  Uri.parse("http://localhost:8000/review/add-review-ajax/$book_id/"),
+                                  Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-ajax/$book_id/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
                                   },
