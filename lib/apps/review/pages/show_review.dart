@@ -29,7 +29,7 @@ class _ShowReviewState extends State<ShowReview> {
   Future<List<Review>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$book_id/');
+        'http://localhost:8000/review/get-review-json/$book_id/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},

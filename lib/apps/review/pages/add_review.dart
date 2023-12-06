@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -109,20 +110,9 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               //     'description': _description,
                               //     // TODO: Sesuaikan field data sesuai dengan aplikasimu
                               // }));
-                              Cookie? usernameCookie = request.cookies['username'];
-
-                              String? username;
-
-                              if (usernameCookie != null) {
-                                // Use the value property of the Cookie object to get the username
-                                username = usernameCookie.value;
-                                print('Logged-in username: $username');
-                              } else {
-                                print('Username cookie not available.');
-                              }
 
                               final http.Response response = await http.post(
-                                  Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-ajax/$book_id/"),
+                                  Uri.parse("http://localhost:8000/review/add-review-ajax/$book_id/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
                                   },
@@ -134,12 +124,13 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                   // review_date = models.DateTimeField(auto_now_add=True)
                                   body: jsonEncode(<String, String>{
                                     'book_title': book_title,
-                                    'reviewer_name': username!,
+                                    'reviewer_name': UserLoggedIn.user.username,
                                     'review_score': _reviewScore.toString(),
                                     'review_summary': _reviewSummary,
                                     'review_text': _reviewText,
                                   }),
                                 );
+                              print(UserLoggedIn.user.username);
                               if (response.statusCode == 200) {
                               // Successful response
                               final Map<String, dynamic> responseBody = jsonDecode(response.body);
