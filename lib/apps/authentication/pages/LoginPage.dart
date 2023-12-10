@@ -56,11 +56,12 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Scaffold(
                   backgroundColor: Color.fromRGBO(202, 209, 218, 1),
-                  body: Column(
+                  body: SingleChildScrollView(
+                    child: Column(
                     children: [
-                      MyHeader(),
+                      MyHeader(height: 130,),
                       const Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 24.0),
                         child: Center(
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -70,38 +71,68 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 color: Color(0xFF105857),
-                                fontSize: 48,
+                                fontSize: 40,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ),
                       ),
+                      
                       Column(
                         children: [
-                          Text(
-                              'Your Username',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color(0xFF105857),
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                            const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 0.0),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Your Username',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF105857),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
+                                horizontal: 34.0, vertical: 10.0),
                             child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 190, 174, 161)
+                                ),
                               decoration: InputDecoration(
-                                hintText: "Masukkan Username",
-                                labelText: "Username",
+                                filled: true,
+                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                hintText: " Masukkan Username",
+                                labelText: " Username",
                                 labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                icon: const Icon(Icons.attach_email),
+                                    const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    
+                                hintStyle: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -123,24 +154,59 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                           ),
+                          const Padding(
+                            padding: const EdgeInsets.only(left: 36.0, right: 36.0, top: 22.0, bottom: 5.0),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Your Password',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF105857),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
+                                horizontal: 36.0, vertical: 10.0),
                             child: TextFormField(
                               obscureText: true,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 190, 174, 161)
+                                ),
                               decoration: InputDecoration(
-                                hintText: "Masukkan Password",
-                                labelText: "Password",
+                                filled: true,
+                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                hintText: " ● ● ● ● ●",
+                                labelText: " Password",
                                 labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                icon: const Icon(
-                                  Icons.lock_outline,
-                                ),
+                                    const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    
+                                hintStyle: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -166,16 +232,24 @@ class _LoginPageState extends State<LoginPage> {
                             height: 25,
                           ),
                           Container(
-                            height: size.height * 0.08,
-                            width: size.width * 0.8,
+                            height: size.height * 0.07,
+                            width: size.width * 0.7,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: const Color(0xFF24262A),
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0xFF105857),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2), // Shadow color
+                                  spreadRadius: 2, // Spread radius
+                                  blurRadius: 5, // Blur radius
+                                  offset: Offset(0, 2), // Offset in the x, y direction
+                                ),
+                              ],
                             ),
                             child: TextButton(
                               onPressed: () async {
                                 final response = await request.login(
-                                    "http://localhost:8000/auth/login/",
+                                    "https://litera-b06-tk.pbp.cs.ui.ac.id/auth/login/",
                                     {
                                       'username': username,
                                       'password': password1,
@@ -202,9 +276,10 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                               child: const Text(
-                                'Submit',
+                                'Login to Your Account',
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
                                     color: Colors.white,
                                     height: 1.5,
                                     fontWeight: FontWeight.bold),
@@ -229,11 +304,11 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: const BoxDecoration(
                               border: Border(
                                   bottom: BorderSide(
-                                      width: 1, color: Colors.white))),
+                                      width: 1, color: Color.fromARGB(255, 152, 111, 248)))),
                           child: const Text(
-                            'Create New Account',
+                            'Not registered? Create account',
                             style: TextStyle(
-                                fontSize: 22, color: Colors.white, height: 1.5),
+                                fontSize: 18, color: Color(0xFF105857),),
                           ),
                         ),
                       ),
@@ -241,6 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 35,
                       ),
                     ],
+                    )
                   ),
                 )
               ],
