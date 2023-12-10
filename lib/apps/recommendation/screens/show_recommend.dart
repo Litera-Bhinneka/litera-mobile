@@ -56,7 +56,7 @@ Widget build(BuildContext context) {
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Column(
             children: [
-              MyHeader(),
+              MyHeader(height: 86),
               Text(
                 "Tidak ada data item.",
                 style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
@@ -215,7 +215,7 @@ Widget build(BuildContext context) {
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return MyHeader();
+    return MyHeader(height: 86,);
   }
 
   @override

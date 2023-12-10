@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -38,44 +39,83 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Stack(
             children: [
               Scaffold(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Color.fromRGBO(202, 209, 218, 1),
                 body: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: size.width * 0.1,
-                      ),
-                      Stack(
-                        children: const [
-                          Center(
-                            child: Text('Register Account',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 55,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
+                      MyHeader(height: 130,),
+                      const Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 24.0),
+                        child: Center(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Register',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Color(0xFF105857),
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.width * 0.1,
+                        ),
                       ),
                       Column(
                         children: [
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 0.0),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Your Username',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF105857),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
+                                horizontal: 34.0, vertical: 10.0),
                             child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 190, 174, 161)
+                                ),
                               decoration: InputDecoration(
-                                hintText: "contoh: Dummy123",
-                                labelText: "Username",
+                                filled: true,
+                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                hintText: " Masukkan Username",
+                                labelText: " Username",
                                 labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                icon: const Icon(Icons.people),
+                                    const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    
+                                hintStyle: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -97,23 +137,59 @@ class _RegisterPageState extends State<RegisterPage> {
                               },
                             ),
                           ),
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 0.0),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Your Password',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF105857),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
+                                horizontal: 36.0, vertical: 10.0),
                             child: TextFormField(
                               obscureText: true,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintText: "Masukkan Password",
-                                labelText: "Password",
-                                labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                icon: const Icon(
-                                  Icons.lock_outline,
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 190, 174, 161)
                                 ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                hintText: " ● ● ● ● ●",
+                                labelText: " Password",
+                                labelStyle:
+                                    const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    
+                                hintStyle: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -135,21 +211,59 @@ class _RegisterPageState extends State<RegisterPage> {
                               },
                             ),
                           ),
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 0.0),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Confirm Password',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF105857),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
+                                horizontal: 36.0, vertical: 10.0),
                             child: TextFormField(
                               obscureText: true,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 190, 174, 161)
+                                ),
                               decoration: InputDecoration(
-                                hintText: "Konfirmasi Password",
-                                labelText: "Konfirmasi Password",
+                                filled: true,
+                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                hintText: " ● ● ● ● ●",
+                                labelText: " Konfirmasi Password",
                                 labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                icon: const Icon(Icons.lock_outline),
+                                    const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    
+                                hintStyle: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      color:Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -175,11 +289,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             height: 25,
                           ),
                           Container(
-                            height: size.height * 0.08,
-                            width: size.width * 0.8,
+                            height: size.height * 0.07,
+                            width: size.width * 0.7,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: const Color(0xFF24262A),
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0xFF105857),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2), // Shadow color
+                                  spreadRadius: 2, // Spread radius
+                                  blurRadius: 5, // Blur radius
+                                  offset: Offset(0, 2), // Offset in the x, y direction
+                                ),
+                              ],
                             ),
                             child: TextButton(
                               onPressed: () async {
@@ -246,9 +368,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                               },
                               child: const Text(
-                                'Submit',
+                                'Create an Account',
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
                                     color: Colors.white,
                                     height: 1.5,
                                     fontWeight: FontWeight.bold),
@@ -256,20 +379,28 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 30,
+                            height: 35,
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Navigate to the RegisterPage when the "Create New Account?" link is pressed
-                              Navigator.push(
+                          GestureDetector(
+                            onTap: () {
+                              // Route menu ke counter
+                              Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginPage(title: "Login",)),
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage(title: "Login")),
                               );
                             },
-                            child: Text('Already have an account? Login here!'),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          width: 1, color: Color.fromARGB(255, 152, 111, 248)))),
+                              child: const Text(
+                                'Already had an account? Login here',
+                                style: TextStyle(
+                                    fontSize: 18, color: Color(0xFF105857),),
+                              ),
+                            ),
                           ),
                         ],
                       )

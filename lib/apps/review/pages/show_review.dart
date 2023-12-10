@@ -77,7 +77,7 @@ class _ShowReviewState extends State<ShowReview> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MyHeader(),
+            MyHeader(height: 86,),
             FutureBuilder(
               future: Future.wait([fetchProduct(), fetchBook()]),
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
