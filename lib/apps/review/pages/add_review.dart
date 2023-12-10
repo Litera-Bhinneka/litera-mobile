@@ -112,9 +112,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               // }));
 
                               final http.Response response = await http.post(
-                                  Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-ajax/$book_id/"),
+                                  Uri.parse("http://localhost:8000/review/book-review/1/add-review-ajax/${book_id}/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
+                                    'X-CSRFToken': 'your_csrf_token_here',
                                   },
                                   // book_title = models.CharField(max_length=255)
                                   // reviewer_name = models.CharField(max_length=255)
@@ -130,7 +131,13 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                     'review_text': _reviewText,
                                   }),
                                 );
-                              print(UserLoggedIn.user.username);
+                              print(jsonEncode(<String, String>{
+                                    'book_title': book_title,
+                                    'reviewer_name': UserLoggedIn.user.username,
+                                    'review_score': _reviewScore.toString(),
+                                    'review_summary': _reviewSummary,
+                                    'review_text': _reviewText,
+                                  }));
                               if (response.statusCode == 200) {
                               // Successful response
                               final Map<String, dynamic> responseBody = jsonDecode(response.body);

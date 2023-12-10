@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/pages/RegisterPage.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'package:litera_mobile/main.dart';
 import 'package:provider/provider.dart';
 import 'package:litera_mobile/components/Drawer.dart';
@@ -54,23 +55,39 @@ class _LoginPageState extends State<LoginPage> {
             child: Stack(
               children: [
                 Scaffold(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: Color.fromRGBO(202, 209, 218, 1),
                   body: Column(
                     children: [
-                      const Flexible(
+                      MyHeader(),
+                      const Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
                         child: Center(
-                          child: Text(
-                            'LITERA',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Login',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Color(0xFF105857),
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                       Column(
                         children: [
+                          Text(
+                              'Your Username',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF105857),
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25.0, vertical: 10.0),
