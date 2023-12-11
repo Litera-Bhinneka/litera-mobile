@@ -26,14 +26,14 @@ class StarRating extends StatelessWidget {
             // Full star for integer part
             return FaIcon(
               FontAwesomeIcons.solidStar,
-              color: Colors.amber, // You can set the color based on your design
+              color: const Color.fromARGB(255, 255, 207, 63), // You can set the color based on your design
               size: 20.0, // Adjust the size of the star icon
             );
           } else if (index == integerPart && decimalPart > 0) {
             // Partial star for decimal part (only if decimal part is greater than 0)
             return FaIcon(
               FontAwesomeIcons.solidStar,
-              color: Colors.amber.withOpacity(0.5), // Adjust the opacity for partial stars
+              color: Color.fromARGB(255, 255, 207, 63).withOpacity(0.5), // Adjust the opacity for partial stars
               size: 20.0,
             );
           } else {
@@ -78,7 +78,7 @@ class _StarRatingInputState extends State<StarRatingInput> {
           },
           child: Icon(
             index < widget.rating ? FontAwesomeIcons.solidStar : FontAwesomeIcons.star,
-            color: Colors.amber,
+            color: Color.fromARGB(255, 255, 207, 63),
             size: 20.0,
           ),
         ),

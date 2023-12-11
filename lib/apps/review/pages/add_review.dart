@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
+import 'package:litera_mobile/apps/review/pages/show_review.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -112,10 +113,9 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               // }));
 
                               final http.Response response = await http.post(
-                                  Uri.parse("http://localhost:8000/review/book-review/1/add-review-ajax/${book_id}/"),
+                                  Uri.parse("http://localhost:8000/review/add-review-flutter/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
-                                    'X-CSRFToken': 'your_csrf_token_here',
                                   },
                                   // book_title = models.CharField(max_length=255)
                                   // reviewer_name = models.CharField(max_length=255)
@@ -148,7 +148,11 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                     content: Text("Produk baru berhasil disimpan!"),
                                   ),
                                 );
-                                 Navigator.pop(context, 'Post');
+                                 
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ShowReview(book_id: book_id,)),
+                                );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
