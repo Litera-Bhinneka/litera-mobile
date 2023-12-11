@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
@@ -10,6 +11,7 @@ import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:readmore/readmore.dart';
 
 
 class ShowReview extends StatefulWidget {
@@ -29,7 +31,7 @@ class _ShowReviewState extends State<ShowReview> {
   Future<List<Review>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$book_id/');
+        'http://localhost:8000/review/get-review-json/$book_id/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -51,7 +53,7 @@ class _ShowReviewState extends State<ShowReview> {
   Future<List<Book>> fetchBook() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$book_id/');
+        'http://localhost:8000/review/get-book-json/$book_id/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -99,6 +101,18 @@ class _ShowReviewState extends State<ShowReview> {
                   List<Review> reviews = snapshot.data![0] as List<Review>;
                   List<Book> book = snapshot.data![1] as List<Book>;
 
+                  // Calculate total and average rating
+                  double totalRating = 0.0;
+                  double averageRating = 0.0;
+
+                  for (int index = 0; index < reviews.length; index++) {
+                    totalRating += reviews[index].fields.reviewScore.toDouble();
+                  }
+
+                  if (reviews.length > 0) {
+                    averageRating = totalRating / reviews.length;
+                  }
+
                   // Display book details as the first item in the list
                   Widget bookDetails = Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -120,7 +134,23 @@ class _ShowReviewState extends State<ShowReview> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text(book[0].fields.description),
+                        ReadMoreText(
+                          "${book[0].fields.description}",
+                          trimLines: 3,
+                          colorClickableText: Color.fromARGB(255, 63, 101, 240),
+                          trimMode: TrimMode.Line,
+                          trimCollapsedText: 'Read more',
+                          trimExpandedText: '\nRead less',
+                          lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
+                          moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            StarRating(rating: averageRating.toDouble()),
+                            Text(" (${reviews.length} ratings)", style: TextStyle(fontSize: 16),)
+                          ],
+                        )
                       ],
                     ),
                   );
@@ -141,6 +171,10 @@ class _ShowReviewState extends State<ShowReview> {
                     (index) => Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFDDDDDD),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -153,8 +187,28 @@ class _ShowReviewState extends State<ShowReview> {
                           ),
                           const SizedBox(height: 10),
                           StarRating(rating: reviews[index].fields.reviewScore.toDouble()),
-                          const SizedBox(height: 10),
-                          Text("${reviews[index].fields.reviewText}")
+                          const SizedBox(height: 8),
+                          Text(
+                            "${reviews[index].fields.reviewSummary}",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ReadMoreText(
+                            "${reviews[index].fields.reviewText}",
+                            trimLines: 3,
+                            colorClickableText: Color.fromARGB(255, 63, 101, 240),
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: 'Read more',
+                            trimExpandedText: '\nRead less',
+                            lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
+                            moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
+                          ),
+                          const SizedBox(height: 15),
+                          // 'dd MMMM yyyy "at" h:mm a'
+                          Text("${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}")
                         ],
                       ),
                     ),
