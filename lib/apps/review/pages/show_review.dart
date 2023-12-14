@@ -117,6 +117,7 @@ class _ShowReviewState extends State<ShowReview> {
                   Widget bookDetails = Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -153,6 +154,7 @@ class _ShowReviewState extends State<ShowReview> {
                         )
                       ],
                     ),
+                  )
                   );
 
                   Widget addReviewButton = TextButton(
