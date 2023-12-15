@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
+import 'package:litera_mobile/apps/review/pages/show_review.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -34,50 +35,163 @@ class _ReviewDialogState extends State<ReviewDialog> {
     final request = context.watch<CookieRequest>();
 
     return AlertDialog(
-      title: const Text('Add Review'),
-      content: Form(
+      backgroundColor: Colors.white,
+      contentPadding: EdgeInsets.all(16.0),
+      content: Container(
+      width: 380, 
+      height: 450,
+      child: Column(
+      children: [ 
+        const Padding(
+              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+              child: Center(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Share your thoughts about this book!',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      // fontFamily: 'Poppins',
+                      color: Color.fromARGB(255, 31, 31, 31),
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        Form(
         key: _reviewFormKey,
         child: Column(
           children: [
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Review Summary',
-                labelText: 'Review Summary',
+            const Padding(
+              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+              child: Center(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Review Summary',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      // fontFamily: 'Poppins',
+                      color: Color.fromARGB(255, 31, 31, 31),
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  _reviewSummary = value;
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Review Summary cannot be empty';
-                }
-                return null;
-              },
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Review Text',
-                labelText: 'Review Text',
+            Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 9.0, vertical: 5.0),
+              
+            child: TextFormField(
+                style: const TextStyle(
+                                // fontFamily: 'Poppins',
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 31, 31, 31)
+                                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xE1F3F2F2), 
+                  hintText: 'My new FAVORITE COOKBOOK!',
+                  hintStyle: TextStyle(
+                                // fontFamily: 'Poppins',
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 31, 31, 31),
+                                fontWeight: FontWeight.normal,
+                                ),
+                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _reviewSummary = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Review Summary cannot be empty';
+                  }
+                  return null;
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  _reviewText = value;
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Review Text cannot be empty';
-                }
-                return null;
-              },
             ),
-            Row(
-              children: [
-                Text('Review Score: '),
-                // Use your StarRatingInput widget here
-                StarRatingInput(
+            const Padding(
+              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+              child: Center(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Your Review',  
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      // fontFamily: 'Poppins',
+                      color: Color.fromARGB(255, 31, 31, 31),
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 9.0, vertical: 5.0),
+                
+              child: TextFormField(
+                  style: const TextStyle(
+                                  // fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 31, 31, 31)
+                                  ),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xE1F3F2F2), 
+                    hintText: 'I recently bought this book and I love it so much!',
+                    hintStyle: TextStyle(
+                                  // fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 31, 31, 31),
+                                  fontWeight: FontWeight.normal,
+                                  ),
+                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                  ),
+                onChanged: (value) {
+                  setState(() {
+                    _reviewText = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Review Text cannot be empty';
+                  }
+                  return null;
+                },
+              )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 5.0),
+              child: Center(
+                child: StarRatingInput(
                   rating: _reviewScore.toDouble(),
                   onRatingChanged: (newRating) {
                     setState(() {
@@ -85,16 +199,22 @@ class _ReviewDialogState extends State<ReviewDialog> {
                     });
                   },
                 ),
-              ],
+              ),
             ),
+            const SizedBox(height: 100),
             Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.bottomLeft,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.indigo),
+                            MaterialStateProperty.all(Color(0xFF0F5756)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                          ),
+                        ),
                       ),
                       onPressed: () async {
                           if (_reviewFormKey.currentState!.validate()) {
@@ -112,7 +232,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               // }));
 
                               final http.Response response = await http.post(
-                                  Uri.parse("http://localhost:8000/review/add-review-ajax/$book_id/"),
+                                  Uri.parse("http://localhost:8000/review/add-review-flutter/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
                                   },
@@ -130,7 +250,13 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                     'review_text': _reviewText,
                                   }),
                                 );
-                              print(UserLoggedIn.user.username);
+                              print(jsonEncode(<String, String>{
+                                    'book_title': book_title,
+                                    'reviewer_name': UserLoggedIn.user.username,
+                                    'review_score': _reviewScore.toString(),
+                                    'review_summary': _reviewSummary,
+                                    'review_text': _reviewText,
+                                  }));
                               if (response.statusCode == 200) {
                               // Successful response
                               final Map<String, dynamic> responseBody = jsonDecode(response.body);
@@ -141,7 +267,11 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                     content: Text("Produk baru berhasil disimpan!"),
                                   ),
                                 );
-                                 Navigator.pop(context, 'Post');
+                                 
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ShowReview(book_id: book_id,)),
+                                );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -152,17 +282,22 @@ class _ReviewDialogState extends State<ReviewDialog> {
                             }
                           }
                       },
-                      child: const Text(
-                        "Post",
-                        style: TextStyle(color: Colors.white),
+                      child: Container(
+                        width: double.infinity, // Make the button span from left to right
+                        child: const Text(
+                          "Post",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                 ),
           ],
         ),
-      ),
-    );
+      ),]
+    )
+    ));
   }
 }
 

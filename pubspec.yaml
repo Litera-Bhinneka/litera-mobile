@@ -39,6 +39,8 @@ dependencies:
   provider: ^6.1.1
   pbp_django_auth: ^0.4.0
   http: ^1.1.0
+  intl: ^0.17.0
+  readmore: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +86,11 @@ flutter:
     - family: Jomhuria
       fonts:
         - asset: assets/fonts/Jomhuria-Regular.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-SemiBold-600.ttf
+        - asset: assets/fonts/Poppins-Bold-700.ttf
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
