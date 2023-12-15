@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
+import 'package:litera_mobile/apps/review/components/multiselect.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
 import 'package:litera_mobile/apps/review/pages/add_review.dart';
@@ -12,6 +13,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:readmore/readmore.dart';
+import 'package:data_filters/data_filters.dart';
 
 
 class ShowReview extends StatefulWidget {
@@ -23,53 +25,112 @@ class ShowReview extends StatefulWidget {
   State<ShowReview> createState() => _ShowReviewState(book_id: book_id);
 }
 
+class DataFetcher {
+  static Future<List<Review>> fetchReviews(int bookId) async {
+    var url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$bookId/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    List<Review> listReview = [];
+    for (var d in data) {
+      if (d != null) {
+        listReview.add(Review.fromJson(d));
+      }
+    }
+    return listReview;
+  }
+
+  static Future<List<Book>> fetchBooks(int bookId) async {
+    var url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$bookId/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    List<Book> listBook = [];
+    for (var d in data) {
+      if (d != null) {
+        listBook.add(Book.fromJson(d));
+      }
+    }
+    return listBook;
+  }
+}
+
 class _ShowReviewState extends State<ShowReview> {
+  Future<List<dynamic>> combinedFuture = Future.value(List.empty());
+  List<int> ratingSelected= [1,2,3,4,5];
+  List<String> _selectedItems = [];
+
   final int book_id;
 
   _ShowReviewState({required this.book_id});
 
-  Future<List<Review>> fetchProduct() async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse(
-        'http://localhost:8000/review/get-review-json/$book_id/');
-    var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
+  void _showMultiSelect() async {
+    // a list of selectable items
+    // these items can be hard-coded or dynamically fetched from a database/API
+    final List<String> items = [
+      '5 Star',
+      '4 Star',
+      '3 Star',
+      '2 Star',
+      '1 Star',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: items, selectedItems: _selectedItems);
+      },
     );
 
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    // melakukan konversi data json menjadi object Product
-    List<Review> list_review = [];
-    for (var d in data) {
-        if (d != null) {
-            list_review.add(Review.fromJson(d));
-        }
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItems = results;
+      });
     }
-    return list_review;
   }
 
-  Future<List<Book>> fetchBook() async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse(
-        'http://localhost:8000/review/get-book-json/$book_id/');
-    var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
-    );
+  @override
+  void initState() {
+    super.initState();
+    // Initialize combinedFuture with an empty list
+    combinedFuture = Future.value(List.empty());
+    // Load combined data initially
+    loadCombinedData();
+  }
 
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+  Future<void> loadCombinedData() async {
+    setState(() {
+      // Combine both book and review futures
+      combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
+                                    DataFetcher.fetchReviews(book_id)]);
+    });
+  }
+  List<int> extractNumericValues(List<String> starRatings) {
+    List<int> numericValues = [];
 
-    // melakukan konversi data json menjadi object Product
-    List<Book> list_book = [];
-    for (var d in data) {
-        if (d != null) {
-            list_book.add(Book.fromJson(d));
-        }
+    for (String rating in starRatings) {
+      // Split the string by space and take the first part
+      String numericPart = rating.split(' ')[0];
+
+      // Parse the numeric part to an integer and add it to the list
+      int numericValue = int.parse(numericPart);
+      numericValues.add(numericValue);
     }
-    return list_book;
+
+    if (numericValues.length == 0) {
+      numericValues = [1,2,3,4,5];
+    }
+
+    return numericValues;
   }
 
   @override
@@ -81,7 +142,7 @@ class _ShowReviewState extends State<ShowReview> {
           children: [
             MyHeader(height: 86,),
             FutureBuilder(
-              future: Future.wait([fetchProduct(), fetchBook()]),
+              future: combinedFuture,
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -98,8 +159,8 @@ class _ShowReviewState extends State<ShowReview> {
                     ],
                   );
                 } else {
-                  List<Review> reviews = snapshot.data![0] as List<Review>;
-                  List<Book> book = snapshot.data![1] as List<Book>;
+                  List<Review> reviews = snapshot.data![1] as List<Review>;
+                  List<Book> book = snapshot.data![0] as List<Book>;
 
                   // Calculate total and average rating
                   double totalRating = 0.0;
@@ -167,6 +228,13 @@ class _ShowReviewState extends State<ShowReview> {
                     child: const Text('Add Review'),
                   );
 
+                  Widget filterButton = ElevatedButton(
+                    onPressed: _showMultiSelect,
+                    child: const Text('Rating Filter'),
+                  );
+                  print(_selectedItems);
+                  ratingSelected = extractNumericValues(_selectedItems);
+
                   // Display review items for the remaining items in the list
                   List<Widget> reviewItems = List.generate(
                     reviews.length,
@@ -215,13 +283,20 @@ class _ShowReviewState extends State<ShowReview> {
                       ),
                     ),
                   );
+                  List<Widget> filteredReviewItems = reviewItems
+                  .where((reviewWidget) {
+                    int reviewScore = reviews[reviewItems.indexOf(reviewWidget)].fields.reviewScore.toInt();
+                    return ratingSelected.contains(reviewScore);
+                  })
+                  .toList();
 
                   // Combine book details and review items in the Column
                   return Column(
                     children: [
                       bookDetails,
                       addReviewButton, // Optional divider between book details and reviews
-                      ...reviewItems,
+                      filterButton,
+                      ...filteredReviewItems,
                     ],
                   );
                 }

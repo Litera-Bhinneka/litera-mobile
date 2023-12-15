@@ -201,7 +201,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 60),
             Align(
                   alignment: Alignment.bottomLeft,
                   child: Padding(
@@ -232,7 +232,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                               // }));
 
                               final http.Response response = await http.post(
-                                  Uri.parse("http://localhost:8000/review/add-review-flutter/"),
+                                  Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-flutter/"),
                                   headers: <String, String>{
                                     'Content-Type': 'application/json',
                                   },
@@ -273,7 +273,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                   MaterialPageRoute(builder: (context) => ShowReview(book_id: book_id,)),
                                 );
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar( 
                                   const SnackBar(
                                     content: Text("Terdapat kesalahan, silakan coba lagi."),
                                   ),
