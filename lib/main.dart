@@ -10,28 +10,24 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);  
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Provider(  
-      create: (_) {
-        CookieRequest request = CookieRequest();
-        return request;
-      },
-      child: MaterialApp(
-        title: 'Flutter App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-          useMaterial3: true,
-        ),
-        home: SplashScreen()
-      )
-    );
+    return Provider(
+        create: (_) {
+          CookieRequest request = CookieRequest();
+          return request;
+        },
+        child: MaterialApp(
+            title: 'Flutter App',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+              useMaterial3: true,
+            ),
+            home: SplashScreen()));
   }
 }
-
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -81,4 +77,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

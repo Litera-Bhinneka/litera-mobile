@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/apps/exchange/pages/ListOffers.dart';
+import 'package:litera_mobile/apps/exchange/pages/ListOwners.dart';
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 
@@ -69,7 +71,8 @@ class _NavigationExampleState extends State<NavigationExample> {
         ShowRecommendation(),
 
         /// Exchange page
-        SampleHomePage(),
+        ListOffers(),
+        // ListOwners(id: 2),
 
         /// Profile page
         SampleHomePage(),
