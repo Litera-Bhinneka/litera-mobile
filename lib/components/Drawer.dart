@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/apps/exchange/pages/ListOffers.dart';
 import 'package:litera_mobile/apps/exchange/pages/ListOwners.dart';
+import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 
 /// Flutter code sample for [NavigationBar].
@@ -36,7 +38,7 @@ class _NavigationExampleState extends State<NavigationExample> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Color(0xFF0F5756),
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -66,12 +68,11 @@ class _NavigationExampleState extends State<NavigationExample> {
         ShowReview(book_id: 35),
 
         /// Recommendation page
-        SampleHomePage(),
+        ShowRecommendation(),
 
         /// Exchange page
-        ListOwners(
-          id: 2,
-        ),
+        ListOffers(),
+        // ListOwners(id: 2),
 
         /// Profile page
         SampleHomePage(),

@@ -186,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 if (_formKey.currentState!.validate()) {
                                   // Submit to Django server and wait for response
                                   final http.Response response = await http.post(
-                                    Uri.parse("http://localhost:8000/auth/register/"),
+                                    Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/auth/register/"),
                                     headers: <String, String>{
                                       'Content-Type': 'application/json',
                                     },
@@ -220,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 // Navigate to the LoginPage when the "Login here" button is pressed
                                                 Navigator.pushReplacement(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                                  MaterialPageRoute(builder: (context) => LoginPage(title: "Login",)),
                                                 );
                                               },
                                               child: const Text('Login here'),
@@ -266,7 +266,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               // Navigate to the RegisterPage when the "Create New Account?" link is pressed
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginPage()),
+                                MaterialPageRoute(builder: (context) => LoginPage(title: "Login",)),
                               );
                             },
                             child: Text('Already have an account? Login here!'),

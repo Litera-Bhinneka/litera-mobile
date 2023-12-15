@@ -1,127 +1,232 @@
-import 'package:litera_mobile/apps/authentication/pages/RegisterPage.dart';
 import 'package:flutter/material.dart';
-import 'package:litera_mobile/components/Drawer.dart';
+import 'package:litera_mobile/apps/authentication/pages/RegisterPage.dart';
 import 'package:litera_mobile/main.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-
-void main() {
-    runApp(const LoginApp());
-}
-
-class LoginApp extends StatelessWidget {
-const LoginApp({super.key});
-
-@override
-Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Login',
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-    ),
-    home: const LoginPage(),
-    );
-    }
-}
+import 'package:litera_mobile/components/Drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:litera_mobile/apps/authentication/models/User.dart';
 
 class LoginPage extends StatefulWidget {
-    const LoginPage({super.key});
-
-    @override
-    _LoginPageState createState() => _LoginPageState();
+  const LoginPage({super.key, required this.title});
+  final String title;
+// @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text(title),
+  //     ),
+  //     drawer: buildDrawer(context),
+  //     body: Center(
+  //       child: Text('Login Page'),
+  //       // MULAI KERJAIN DARI SINI YA
+  //     ),
+  //   );
+  // }
+  @override
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+  bool isPasswordVisible = false;
+  void togglePasswordView() {
+    setState(() {
+      isPasswordVisible = !isPasswordVisible;
+    });
+  }
 
-    @override
-    Widget build(BuildContext context) {
-        final request = context.watch<CookieRequest>();
-        return Scaffold(
-            appBar: AppBar(
-                title: const Text('Login'),
-            ),
-            body: Container(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+  String username = "";
+  String password1 = "";
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    // The rest of your widgets are down below
+    Size size = MediaQuery.of(context).size;
+    return Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.greenAccent, Colors.blueGrey])),
+        child: Form(
+            key: _loginFormKey,
+            child: Stack(
+              children: [
+                Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: Column(
                     children: [
-                        TextField(
-                            controller: _usernameController,
-                            decoration: const InputDecoration(
-                                labelText: 'Username',
-                            ),
+                      const Flexible(
+                        child: Center(
+                          child: Text(
+                            'LITERA',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        const SizedBox(height: 12.0),
-                        TextField(
-                            controller: _passwordController,
-                            decoration: const InputDecoration(
-                                labelText: 'Password',
-                            ),
-                            obscureText: true,
-                        ),
-                        const SizedBox(height: 24.0),
-                        ElevatedButton(
-                            onPressed: () async {
-                                String username = _usernameController.text;
-                                String password = _passwordController.text;
-
-                                // Cek kredensial
-                                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                                // Untuk menyambungkan Android emulator dengan Django pada localhost,
-                                // gunakan URL http://10.0.2.2/
-                                final response = await request.login("http://localhost:8000/auth/login/", {
-                                'username': username,
-                                'password': password,
+                      ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25.0, vertical: 10.0),
+                            child: TextFormField(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: "Masukkan Username",
+                                labelText: "Username",
+                                labelStyle:
+                                    const TextStyle(color: Colors.white),
+                                icon: const Icon(Icons.attach_email),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                hintStyle: const TextStyle(color: Colors.white),
+                              ),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  username = value!;
                                 });
-                    
-                                if (request.loggedIn) { 
-                                    String message = response['message'];
-                                    String uname = response['username'];
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => MyHomePage(title: "LITERA")),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(
-                                            SnackBar(content: Text("$message Selamat datang, $uname.")));
-                                    } else {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                            title: const Text('Login Gagal'),
-                                            content:
-                                                Text(response['message']),
-                                            actions: [
-                                                TextButton(
-                                                    child: const Text('OK'),
-                                                    onPressed: () {
-                                                        Navigator.pop(context);
-                                                    },
-                                                ),
-                                            ],
-                                        ),
-                                    );
+                              },
+                              onSaved: (String? value) {
+                                setState(() {
+                                  username = value!;
+                                });
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Username tidak boleh kosong';
                                 }
-                            },
-                            child: const Text('Login'),
-                        ),
-                        const SizedBox(height: 12.0),
-                      TextButton(
-                        onPressed: () {
-                          // Navigate to the RegisterPage when the "Create New Account?" link is pressed
-                          Navigator.push(
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25.0, vertical: 10.0),
+                            child: TextFormField(
+                              obscureText: true,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: "Masukkan Password",
+                                labelText: "Password",
+                                labelStyle:
+                                    const TextStyle(color: Colors.white),
+                                icon: const Icon(
+                                  Icons.lock_outline,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                hintStyle: const TextStyle(color: Colors.white),
+                              ),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  password1 = value!;
+                                });
+                              },
+                              onSaved: (String? value) {
+                                setState(() {
+                                  password1 = value!;
+                                });
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Container(
+                            height: size.height * 0.08,
+                            width: size.width * 0.8,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: const Color(0xFF24262A),
+                            ),
+                            child: TextButton(
+                              onPressed: () async {
+                                final response = await request.login(
+                                    "http://localhost:8000/auth/login/", {
+                                  'username': username,
+                                  'password': password1,
+                                });
+                                if (response['status']) {
+                                  UserLoggedIn.user = (User(username));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("Successfully logged in!"),
+                                  ));
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MyHomePage(title: "LITERA")),
+                                  );
+                                  print(UserLoggedIn.user
+                                      .username); // GET USERNAME OF LOGGED IN USER
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        "An error occured, please try again."),
+                                  ));
+                                }
+                              },
+                              child: const Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                    height: 1.5,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 35,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Route menu ke counter
+                          Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisterPage()),
+                            MaterialPageRoute(
+                                builder: (context) => const RegisterPage()),
                           );
                         },
-                        child: Text('Create New Account?'),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 1, color: Colors.white))),
+                          child: const Text(
+                            'Create New Account',
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.white, height: 1.5),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 35,
                       ),
                     ],
-                ),
-            ),
-        );
-    }
+                  ),
+                )
+              ],
+            )));
+  }
 }

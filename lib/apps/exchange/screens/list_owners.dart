@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/Owner.dart';
 import 'package:litera_mobile/apps/exchange/pages/SendOffer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -18,7 +19,7 @@ class ListOwners extends StatefulWidget {
 class _ListOwnersState extends State<ListOwners> {
   Future<List<Owner>> fetchProduct() async {
     var url = Uri.parse(
-        'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/');
+        'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -50,15 +51,11 @@ class _ListOwnersState extends State<ListOwners> {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 if (!snapshot.hasData) {
-                  return const Column(
-                    children: [
-                      Text(
-                        "Tidak ada data card.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
+                  return const Center(
+                    child: Text(
+                      "There are no users with this book.",
+                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                    ),
                   );
                 } else {
                   return Column(
@@ -94,8 +91,10 @@ class _ListOwnersState extends State<ListOwners> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   SendOfferPage(
-                                                      idOwner: snapshot
-                                                          .data![index].pk),
+                                                      username: snapshot
+                                                          .data![index]
+                                                          .fields
+                                                          .username),
                                             ),
                                           );
                                         },
