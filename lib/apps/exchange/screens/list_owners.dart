@@ -3,9 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/Owner.dart';
-import 'package:litera_mobile/apps/exchange/pages/SendOffer.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:litera_mobile/apps/exchange/screens/send_offer.dart';
+import 'package:litera_mobile/components/head.dart';
 
 class ListOwners extends StatefulWidget {
   final int id;
@@ -19,7 +18,7 @@ class ListOwners extends StatefulWidget {
 class _ListOwnersState extends State<ListOwners> {
   Future<List<Owner>> fetchProduct() async {
     var url = Uri.parse(
-        'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -40,10 +39,7 @@ class _ListOwnersState extends State<ListOwners> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Exchange'),
-        ),
-        // drawer: const LeftDrawer(),
+        backgroundColor: const Color.fromRGBO(202, 209, 218, 1),
         body: FutureBuilder(
             future: fetchProduct(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -60,30 +56,55 @@ class _ListOwnersState extends State<ListOwners> {
                 } else {
                   return Column(
                     children: [
+                      const MyHeader(),
                       const SizedBox(height: 10),
-                      const Text(
-                        "List of Owners",
-                      ),
                       Expanded(
                         child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (_, index) => Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 12),
-                                  padding: const EdgeInsets.all(20.0),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                // padding:
+                                //     const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    top: BorderSide(
+                                      color: Color.fromRGBO(174, 191, 214, 1),
+                                      width: 0.5,
+                                    ),
+                                    bottom: BorderSide(
+                                      color: Color.fromRGBO(174, 191, 214, 1),
+                                      width: 0.5,
+                                    ),
+                                  )),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "${snapshot.data![index].fields.username}",
-                                        style: const TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
+                                      Row(children: [
+                                        Container(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: ClipOval(
+                                            child: Image.network(
+                                              'https://media.discordapp.net/attachments/1054028087551078452/1167449134421254194/def.png?ex=658ec43b&is=657c4f3b&hm=96e12f02884650d2bac6e451822b9bf07e9b3d1772ac57804eda08c5f2a97f87&=&format=webp&quality=lossless&width=125&height=125',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        const SizedBox(width: 11),
+                                        Text(
+                                          "${snapshot.data![index].fields.username}",
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ]),
                                       ElevatedButton(
                                         onPressed: () {
                                           Navigator.push(
@@ -102,7 +123,7 @@ class _ListOwnersState extends State<ListOwners> {
                                       ),
                                     ],
                                   ),
-                                )),
+                                ))),
                       ),
                     ],
                   );
