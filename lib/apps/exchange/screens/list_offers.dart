@@ -68,7 +68,9 @@ class _ListOffersState extends State<ListOffers>
                 const MyHeader(),
                 TabBar(
                   controller: _tabController,
-                  tabs: [
+                  // labelColor: Colors.blue,
+                  unselectedLabelColor: Colors.black,
+                  tabs: const [
                     Tab(text: 'Sent'),
                     Tab(text: 'Received'),
                   ],

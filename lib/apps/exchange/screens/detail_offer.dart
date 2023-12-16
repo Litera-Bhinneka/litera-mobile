@@ -282,7 +282,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                         onPressed: () async {
                           // Handle cancel button press
                           final response = await request.postJson(
-                              "https://litera-b06-tk.pbp.cs.ui.ac.id/delete-offer-flutter/",
+                              "https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/delete-offer-flutter/",
                               jsonEncode(<String, int>{
                                 'id': widget.offer.pk,
                               }));
