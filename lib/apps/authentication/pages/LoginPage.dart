@@ -249,10 +249,11 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextButton(
                               onPressed: () async {
                                 final response = await request.login(
-                                    "http://localhost:8000/auth/login/", {
-                                  'username': username,
-                                  'password': password1,
-                                });
+                                    "https://litera-b06-tk.pbp.cs.ui.ac.id/auth/login/",
+                                    {
+                                      'username': username,
+                                      'password': password1,
+                                    });
                                 if (response['status']) {
                                   UserLoggedIn.user = (User(username));
                                   ScaffoldMessenger.of(context)

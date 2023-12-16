@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:http/http.dart' as http;
-import 'package:litera_mobile/apps/exchange/pages/ListOffers.dart';
+import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'dart:convert';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class _SendOfferPageState extends State<SendOfferPage> {
 
   Future<List<List<InventoryBook>>> fetchInventories() async {
     var url = Uri.parse(
-        'http://localhost:8000/exchange/get-inventories-flutter/${UserLoggedIn.user.username}/${widget.username}/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-inventories-flutter/${UserLoggedIn.user.username}/${widget.username}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -50,47 +51,50 @@ class _SendOfferPageState extends State<SendOfferPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Send Offer to ${widget.username}'),
-      ),
+      backgroundColor: const Color.fromRGBO(202, 209, 218, 1),
       body: FutureBuilder(
         future: fetchInventories(),
         builder: (context, AsyncSnapshot<List<List<InventoryBook>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            print('test');
             List<InventoryBook> userInventory = snapshot.data![0];
             List<InventoryBook> targetInventory = snapshot.data![1];
 
             return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const MyHeader(),
+                const SizedBox(height: 11),
                 InventoryColumn(
                   title: "Your Inventory",
                   inventory: userInventory,
                   target: selectedUserBooks,
                 ),
+                const SizedBox(height: 11),
                 InventoryColumn(
                   title: "${widget.username}'s Inventory",
                   inventory: targetInventory,
                   target: selectedTargetBooks,
                 ),
-                Row(
+                Expanded(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('Back'),
+                      child: const Text('Back'),
                     ),
+                    const SizedBox(width: 11),
                     ElevatedButton(
                       onPressed: () async {
                         final response = await request.postJson(
-                            "http://localhost:8000/exchange/create-offer-flutter/",
+                            "https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/create-offer-flutter/",
                             jsonEncode(<String, dynamic>{
                               'username2': UserLoggedIn.user.username,
                               'username1': widget.username,
@@ -113,16 +117,22 @@ class _SendOfferPageState extends State<SendOfferPage> {
                           context,
                           MaterialPageRoute(builder: (context) => ListOffers()),
                         );
-                        print(response);
                       },
                       // onPressed: () {
                       //   print(selectedUserBooks);
                       //   print(selectedTargetBooks);
                       // },
-                      child: Text('Send Offer'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF105857),
+                      ),
+                      child: const Text('Send Offer',
+                          style: TextStyle(
+                            color: Colors.white,
+                          )),
                     ),
                   ],
-                )
+                )),
+                const SizedBox(height: 14)
               ],
             );
           }
@@ -151,11 +161,14 @@ class _InventoryColumnState extends State<InventoryColumn> {
   void onBookTap(InventoryBook book, List<InventoryBook> source,
       List<InventoryBook> target) {
     setState(() {
-      for (InventoryBook b in source) {
+      int id = -1;
+      for (int i = 0; i < source.length; i++) {
+        InventoryBook b = source[i];
         if (b.id == book.id && b.amount <= 1)
-          source.remove(b);
+          id = i;
         else if (b.id == book.id) b.amount--;
       }
+      if (id != -1) source.removeAt(id);
       bool ok = false;
       for (InventoryBook b in target) {
         if (b.id == book.id) {
@@ -173,36 +186,50 @@ class _InventoryColumnState extends State<InventoryColumn> {
 
   Widget buildInventoryColumn(
       String title, List<InventoryBook> inventory, List<InventoryBook> target) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Expanded(
       child: Column(
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: screenWidth * 0.025, fontWeight: FontWeight.bold),
           ),
           Container(
-            height: 250, // Set the height of the grid as needed
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: const Color.fromRGBO(174, 191, 214, 1)),
+            ),
+            height: screenHeight * 0.35,
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // Adjust the cross axis count as needed
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
               ),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => onBookTap(inventory[index], inventory, target),
                   child: Card(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.network(
+                    elevation: 0,
+                    // shape: RoundedRectangleBorder(
+                    //   side: BorderSide(color: Colors.black), // Set border color
+                    // ),
+                    // color: const Color(0xFF105857),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Image.network(
                             inventory[index].image,
-                            height: 50,
-                            width: 40,
                             fit: BoxFit.cover,
                           ),
-                          Text('Amount: ${inventory[index].amount}'),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          'Amount: ${inventory[index].amount}',
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.02,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -218,10 +245,13 @@ class _InventoryColumnState extends State<InventoryColumn> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(width: 8),
         buildInventoryColumn(widget.title, widget.inventory, widget.target),
+        const SizedBox(width: 4),
         buildInventoryColumn('Selected Books', widget.target, widget.inventory),
+        const SizedBox(width: 8),
       ],
     );
   }
