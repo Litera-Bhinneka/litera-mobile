@@ -56,7 +56,7 @@ class _ListOwnersState extends State<ListOwners> {
                 } else {
                   return Column(
                     children: [
-                      const MyHeader(),
+                      const MyHeader(height: 86),
                       const SizedBox(height: 10),
                       Expanded(
                         child: ListView.builder(
