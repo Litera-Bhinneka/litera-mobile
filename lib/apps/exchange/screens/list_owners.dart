@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/Owner.dart';
-import 'package:litera_mobile/apps/exchange/pages/SendOffer.dart';
+import 'package:litera_mobile/apps/exchange/screens/send_offer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 

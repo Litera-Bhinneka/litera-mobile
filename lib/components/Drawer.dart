@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:litera_mobile/apps/exchange/pages/ListOffers.dart';
-import 'package:litera_mobile/apps/exchange/pages/ListOwners.dart';
+import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 

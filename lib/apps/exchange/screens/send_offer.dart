@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:http/http.dart' as http;
-import 'package:litera_mobile/apps/exchange/pages/ListOffers.dart';
+import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
 import 'dart:convert';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
