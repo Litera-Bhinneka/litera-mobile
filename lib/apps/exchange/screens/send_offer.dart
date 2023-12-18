@@ -66,7 +66,7 @@ class _SendOfferPageState extends State<SendOfferPage> {
             return Column(
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const MyHeader(),
+                const MyHeader(height: 86),
                 const SizedBox(height: 11),
                 InventoryColumn(
                   title: "Your Inventory",

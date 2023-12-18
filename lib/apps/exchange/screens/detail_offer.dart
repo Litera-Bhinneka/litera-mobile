@@ -63,7 +63,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const MyHeader(),
+                const MyHeader(height: 86),
                 const SizedBox(height: 11),
                 // Display text above the first inventory
                 if (widget.offer.fields.username1 ==

@@ -65,7 +65,7 @@ class _ListOffersState extends State<ListOffers>
 
             return Column(
               children: [
-                const MyHeader(),
+                const MyHeader(height: 86),
                 TabBar(
                   controller: _tabController,
                   // labelColor: Colors.blue,
