@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:litera_mobile/apps/exchange/models/Offer.dart';
+import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class DetailOfferPage extends StatefulWidget {
 class _DetailOfferPageState extends State<DetailOfferPage> {
   Future<List<List<InventoryBook>>> fetchInventories() async {
     var url = Uri.parse(
-        'http://localhost:8000/exchange/detail-offer-flutter/${widget.offer.pk}/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/detail-offer-flutter/${widget.offer.pk}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -45,16 +46,14 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Offer Details'),
-      ),
+      backgroundColor: const Color.fromRGBO(202, 209, 218, 1),
       body: FutureBuilder(
         future: fetchInventories(),
         builder: (context, AsyncSnapshot<List<List<InventoryBook>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: Text('No inventory data available.'),
             );
           } else {
@@ -64,19 +63,21 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const MyHeader(height: 86),
+                const SizedBox(height: 11),
                 // Display text above the first inventory
                 if (widget.offer.fields.username1 ==
                     UserLoggedIn.user.username) ...[
                   Text(
                     "${widget.offer.fields.username2} Offered:",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ] else ...[
-                  Text(
+                  const Text(
                     'You Offered:',
                     style: TextStyle(
                       fontSize: 18,
@@ -89,13 +90,22 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 // Display the first inventory vertically
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    // padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black, // Set the color of the border
+                        width: 0.5, // Set the width of the border
+                      ),
+                    ),
+                    // padding: EdgeInsets.all(2.0),
                     child: GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 8.0,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
                       ),
                       itemCount: firstInventory.length,
                       itemBuilder: (context, index) {
@@ -118,12 +128,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                   ),
                 ),
                 // Add spacing between the sections
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 // Display text above the second inventory
 
                 if (widget.offer.fields.username1 ==
                     UserLoggedIn.user.username) ...[
-                  Text(
+                  const Text(
                     'For Your:',
                     style: TextStyle(
                       fontSize: 18,
@@ -134,7 +144,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 ] else ...[
                   Text(
                     'For ${widget.offer.fields.username1}\'s:',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -145,13 +155,21 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 // Display the second inventory vertically
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    // padding: EdgeInsets.all(2.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black, // Set the color of the border
+                        width: 0.5, // Set the width of the border
+                      ),
+                    ),
                     child: GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 8.0,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
                       ),
                       itemCount: secondInventory.length,
                       itemBuilder: (context, index) {
@@ -174,7 +192,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                   ),
                 ),
                 // Add spacing between the sections
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 // Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -185,14 +203,14 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                       },
                       child: Text('Back'),
                     ),
-                    SizedBox(width: 11),
+                    const SizedBox(width: 11),
                     if (widget.offer.fields.username1 ==
                         UserLoggedIn.user.username) ...[
                       ElevatedButton(
                         onPressed: () async {
                           // Handle accept button press
                           final response = await request.postJson(
-                              "http://localhost:8000/exchange/accept-offer-flutter/",
+                              "https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/accept-offer-flutter/",
                               jsonEncode(<String, int>{
                                 'id': widget.offer.pk,
                               }));
@@ -222,14 +240,17 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                           }
                           Navigator.pop(context);
                         },
-                        child: Text('Accept'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                        child: const Text('Accept'),
                       ),
-                      SizedBox(width: 11),
+                      const SizedBox(width: 11),
                       ElevatedButton(
                         onPressed: () async {
                           // Handle reject button press
                           final response = await request.postJson(
-                              "http://localhost:8000/exchange/delete-offer-flutter/",
+                              "https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/delete-offer-flutter/",
                               jsonEncode(<String, int>{
                                 'id': widget.offer.pk,
                               }));
@@ -251,6 +272,9 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                           }
                           Navigator.pop(context);
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
                         child: Text('Reject'),
                       ),
                     ] else ...[
@@ -258,7 +282,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                         onPressed: () async {
                           // Handle cancel button press
                           final response = await request.postJson(
-                              "http://localhost:8000/exchange/delete-offer-flutter/",
+                              "https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/delete-offer-flutter/",
                               jsonEncode(<String, int>{
                                 'id': widget.offer.pk,
                               }));
@@ -280,12 +304,18 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                           }
                           Navigator.pop(context);
                         },
-                        child: Text('Cancel'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Cancel',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
                       ),
                     ],
                   ],
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
               ],
             );
           }
