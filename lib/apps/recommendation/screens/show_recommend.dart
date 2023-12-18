@@ -23,7 +23,7 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
   Future<List<Recommendation>> fetchRecommendation() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://10.0.2.2:8000/recommendation/get-recommendation-json/');
+        'http://localhost:8000/recommendation/get-recommendation-json/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -77,7 +77,7 @@ Widget build(BuildContext context) {
               (BuildContext context, int index) {
                 Recommendation recommendation = recommendations[index];
                 String date = DateFormat("dd MMMM yyyy 'at' h:mm a").format(recommendation.fields.recommendationDate);
-
+                
                 return Card(
                   color: Color(0xFFDDDDDD),
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -85,6 +85,35 @@ Widget build(BuildContext context) {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
+                        const Row(
+                          children: [
+                            Expanded(
+                              child: Text.rich(
+                                  TextSpan(
+                                    text: "If you like this book...",
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                            ),
+                            Expanded(
+                              child: Text.rich(
+                                  TextSpan(
+                                    text: "You may like this book...",
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
                             Expanded(
@@ -126,7 +155,7 @@ Widget build(BuildContext context) {
                                     style: const TextStyle(
                                       fontSize: 13.0,
                                       fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Poppins',
                                     ),
                                   ),
                                   textAlign: TextAlign.center,
@@ -151,7 +180,7 @@ Widget build(BuildContext context) {
                                     style: const TextStyle(
                                       fontSize: 13.0,
                                       fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Poppins',
                                     ),
                                   ),
                                   textAlign: TextAlign.center,
@@ -171,7 +200,9 @@ Widget build(BuildContext context) {
                           style: const TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.normal,
-                          )
+                            fontFamily: 'Poppins',
+                          ),
+                          textAlign: TextAlign.justify,
                         ),
                         Divider(),
                         Text(
@@ -180,7 +211,8 @@ Widget build(BuildContext context) {
                             fontSize: 13.0,
                             fontWeight: FontWeight.normal,
                             fontStyle: FontStyle.italic,
-                            color: Color(0xFF718096)
+                            color: Color(0xFF718096),
+                            fontFamily: 'Poppins',
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -199,9 +231,9 @@ Widget build(BuildContext context) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyAdd()),
+        showDialog<String>(
+          context: context,
+            builder: (BuildContext context) => RecommendationDialog(),
         );
       },
       child: const Icon(Icons.add),

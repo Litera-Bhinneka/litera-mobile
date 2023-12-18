@@ -249,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextButton(
                               onPressed: () async {
                                 final response = await request.login(
-                                    "http://10.0.2.2:8000/auth/login/",
+                                    "http://localhost:8000/auth/login/",
                                     {
                                       'username': username,
                                       'password': password1,
