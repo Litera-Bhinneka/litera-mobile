@@ -52,34 +52,53 @@ class StarRating extends StatelessWidget {
 }
 
 class StarRatingInput extends StatefulWidget {
-  final double rating; // Rating out of 5
-  final ValueChanged<double>? onRatingChanged;
+  final int rating; // Rating out of 5
+  final ValueChanged<int>? onRatingChanged;
+  final FormFieldValidator<int>? validator;
 
-  StarRatingInput({required this.rating, this.onRatingChanged});
+  StarRatingInput({super.key, required this.rating, this.onRatingChanged, this.validator});
 
   @override
   _StarRatingInputState createState() => _StarRatingInputState();
 }
 
 class _StarRatingInputState extends State<StarRatingInput> {
+  final double starSize = 28.0; // Set the size of each star
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(
-        5,
-        (index) => GestureDetector(
-          onTap: () {
-            double newRating = index + 1.0;
-            if (widget.rating == newRating) {
-              // If the same star is tapped, deselect it
-              newRating = 0.0;
-            }
-            widget.onRatingChanged?.call(newRating);
-          },
-          child: Icon(
-            index < widget.rating ? FontAwesomeIcons.solidStar : FontAwesomeIcons.star,
-            color: Color.fromARGB(255, 255, 207, 63),
-            size: 20.0,
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          5,
+          (index) => GestureDetector(
+            onTap: () {
+              int newRating = index + 1;
+              if (widget.rating == newRating) {
+                newRating = 0;
+              }
+
+              String? error = widget.validator?.call(newRating);
+              if (error == null) {
+                widget.onRatingChanged?.call(newRating);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(error),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0), // Set the gap between stars
+              child: Icon(
+                index < widget.rating ? FontAwesomeIcons.solidStar : FontAwesomeIcons.star,
+                color: Color.fromARGB(255, 255, 207, 63),
+                size: starSize,
+              ),
+            ),
           ),
         ),
       ),

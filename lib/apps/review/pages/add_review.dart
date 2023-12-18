@@ -8,6 +8,10 @@ import 'package:litera_mobile/apps/review/pages/show_review.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
+class AddedState {
+  static bool isAdded = false;
+}
+
 class ReviewDialog extends StatefulWidget {
   const ReviewDialog({Key? key, required this.book_id, required this.book_title}) : super(key: key);
 
@@ -21,6 +25,7 @@ class ReviewDialog extends StatefulWidget {
 class _ReviewDialogState extends State<ReviewDialog> {
   final int book_id;
   final String book_title;
+  bool showErrorText = false;
 
   _ReviewDialogState({required this.book_id, required this.book_title});
 
@@ -40,111 +45,50 @@ class _ReviewDialogState extends State<ReviewDialog> {
       content: Container(
       width: 380, 
       height: 450,
-      child: Column(
-      children: [ 
-        const Padding(
-              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
-              child: Center(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Share your thoughts about this book!',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      // fontFamily: 'Poppins',
-                      color: Color.fromARGB(255, 31, 31, 31),
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        Form(
-        key: _reviewFormKey,
+      child: SingleChildScrollView(
         child: Column(
-          children: [
-            const Padding(
-              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
-              child: Center(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Review Summary',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      // fontFamily: 'Poppins',
-                      color: Color.fromARGB(255, 31, 31, 31),
-                      fontSize: 15,
-                      fontWeight: FontWeight.normal,
+        children: [ 
+          const Padding(
+                padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+                child: Center(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Share your thoughts about this book!',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        // fontFamily: 'Poppins',
+                        color: Color.fromARGB(255, 31, 31, 31),
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 9.0, vertical: 5.0),
-              
-            child: TextFormField(
-                style: const TextStyle(
-                                // fontFamily: 'Poppins',
-                                fontSize: 15,
-                                color: Color.fromARGB(255, 31, 31, 31)
-                                ),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xE1F3F2F2), 
-                  hintText: 'My new FAVORITE COOKBOOK!',
-                  hintStyle: TextStyle(
-                                // fontFamily: 'Poppins',
-                                fontSize: 15,
-                                color: Color.fromARGB(255, 31, 31, 31),
-                                fontWeight: FontWeight.normal,
-                                ),
-                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _reviewSummary = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Review Summary cannot be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const Padding(
-              padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
-              child: Center(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Your Review',  
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      // fontFamily: 'Poppins',
-                      color: Color.fromARGB(255, 31, 31, 31),
-                      fontSize: 15,
-                      fontWeight: FontWeight.normal,
+          Form(
+          key: _reviewFormKey,
+          child: Column(
+            children: [
+              const Padding(
+                padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+                child: Center(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Review Summary',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        // fontFamily: 'Poppins',
+                        color: Color.fromARGB(255, 31, 31, 31),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
+              Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 9.0, vertical: 5.0),
                 
@@ -157,7 +101,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Color(0xE1F3F2F2), 
-                    hintText: 'I recently bought this book and I love it so much!',
+                    hintText: 'My new FAVORITE COOKBOOK!',
                     hintStyle: TextStyle(
                                   // fontFamily: 'Poppins',
                                   fontSize: 15,
@@ -175,128 +119,199 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                         borderRadius: BorderRadius.circular(8.0),
                                       ),
                   ),
-                onChanged: (value) {
-                  setState(() {
-                    _reviewText = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Review Text cannot be empty';
-                  }
-                  return null;
-                },
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 5.0),
-              child: Center(
-                child: StarRatingInput(
-                  rating: _reviewScore.toDouble(),
-                  onRatingChanged: (newRating) {
+                  onChanged: (value) {
                     setState(() {
-                      _reviewScore = newRating.toInt();
+                      _reviewSummary = value;
                     });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Review Summary cannot be empty';
+                    }
+                    return null;
                   },
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-            Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xFF0F5756)),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
-                          ),
-                        ),
-                      ),
-                      onPressed: () async {
-                          if (_reviewFormKey.currentState!.validate()) {
-                              // Kirim ke Django dan tunggu respons
-                              // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                              // final response = await request.postJson(
-                              // "http://localhost:8000/create-flutter/",
-                              // jsonEncode(<String, String>{
-                              //     'name': _name,
-                              //     'price': _price.toString(),
-                              //     'amount': _amount.toString(),
-                              //     'category': _category,
-                              //     'description': _description,
-                              //     // TODO: Sesuaikan field data sesuai dengan aplikasimu
-                              // }));
-
-                              final http.Response response = await http.post(
-                                  Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-flutter/"),
-                                  headers: <String, String>{
-                                    'Content-Type': 'application/json',
-                                  },
-                                  // book_title = models.CharField(max_length=255)
-                                  // reviewer_name = models.CharField(max_length=255)
-                                  // review_score = models.IntegerField()
-                                  // review_summary = models.CharField(max_length=255)
-                                  // review_text = models.TextField() 
-                                  // review_date = models.DateTimeField(auto_now_add=True)
-                                  body: jsonEncode(<String, String>{
-                                    'book_title': book_title,
-                                    'reviewer_name': UserLoggedIn.user.username,
-                                    'review_score': _reviewScore.toString(),
-                                    'review_summary': _reviewSummary,
-                                    'review_text': _reviewText,
-                                  }),
-                                );
-                              print(jsonEncode(<String, String>{
-                                    'book_title': book_title,
-                                    'reviewer_name': UserLoggedIn.user.username,
-                                    'review_score': _reviewScore.toString(),
-                                    'review_summary': _reviewSummary,
-                                    'review_text': _reviewText,
-                                  }));
-                              if (response.statusCode == 200) {
-                              // Successful response
-                              final Map<String, dynamic> responseBody = jsonDecode(response.body);
-
-                              if (responseBody['status'] == 'success') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Produk baru berhasil disimpan!"),
-                                  ),
-                                );
-                                 
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ShowReview(book_id: book_id,)),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar( 
-                                  const SnackBar(
-                                    content: Text("Terdapat kesalahan, silakan coba lagi."),
-                                  ),
-                                );
-                              }
-                            }
-                          }
-                      },
-                      child: Container(
-                        width: double.infinity, // Make the button span from left to right
-                        child: const Text(
-                          "Post",
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
+              const Padding(
+                padding: const EdgeInsets.only(left: 9.0, right: 18.0, top: 15.0, bottom: 1.0),
+                child: Center(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Your Review',  
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        // fontFamily: 'Poppins',
+                        color: Color.fromARGB(255, 31, 31, 31),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),
                 ),
-          ],
-        ),
-      ),]
-    )
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 9.0, vertical: 5.0),
+                  
+                child: TextFormField(
+                    style: const TextStyle(
+                                    // fontFamily: 'Poppins',
+                                    fontSize: 15,
+                                    color: Color.fromARGB(255, 31, 31, 31)
+                                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xE1F3F2F2), 
+                      hintText: 'I recently bought this book and I love it so much!',
+                      hintStyle: TextStyle(
+                                    // fontFamily: 'Poppins',
+                                    fontSize: 15,
+                                    color: Color.fromARGB(255, 31, 31, 31),
+                                    fontWeight: FontWeight.normal,
+                                    ),
+                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8.0)),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Color.fromARGB(221, 80, 80, 80), width: 0.3),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                    ),
+                  onChanged: (value) {
+                    setState(() {
+                      _reviewText = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Review Text cannot be empty';
+                    }
+                    return null;
+                  },
+                )
+              ),
+             Padding(
+                padding: const EdgeInsets.only(left: 0.0, right:0.0, bottom: 10.0, top: 15.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: StarRatingInput(
+                    rating: _reviewScore.toInt(),
+                    onRatingChanged: (newRating) {
+                      setState(() {
+                        _reviewScore = newRating.toInt();
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: showErrorText, // Set to true if you want to show the text
+                child: Text(
+                  "Please rate the book!",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 176, 52, 43),
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xFF0F5756)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                            setState(() {
+                              showErrorText = (_reviewScore == 0);
+                            });
+
+                            if (_reviewFormKey.currentState!.validate() && _reviewScore != 0) {
+                                // Kirim ke Django dan tunggu respons
+                                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                                // final response = await request.postJson(
+                                // "http://localhost:8000/create-flutter/",
+                                // jsonEncode(<String, String>{
+                                //     'name': _name,
+                                //     'price': _price.toString(),
+                                //     'amount': _amount.toString(),
+                                //     'category': _category,
+                                //     'description': _description,
+                                //     // TODO: Sesuaikan field data sesuai dengan aplikasimu
+                                // }));
+
+                                final http.Response response = await http.post(
+                                    Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-flutter/"),
+                                    headers: <String, String>{
+                                      'Content-Type': 'application/json',
+                                    },
+                                    // book_title = models.CharField(max_length=255)
+                                    // reviewer_name = models.CharField(max_length=255)
+                                    // review_score = models.IntegerField()
+                                    // review_summary = models.CharField(max_length=255)
+                                    // review_text = models.TextField() 
+                                    // review_date = models.DateTimeField(auto_now_add=True)
+                                    body: jsonEncode(<String, String>{
+                                      'book_title': book_title,
+                                      'reviewer_name': UserLoggedIn.user.username,
+                                      'review_score': _reviewScore.toString(),
+                                      'review_summary': _reviewSummary,
+                                      'review_text': _reviewText,
+                                    }),
+                                  );
+                                print(jsonEncode(<String, String>{
+                                      'book_title': book_title,
+                                      'reviewer_name': UserLoggedIn.user.username,
+                                      'review_score': _reviewScore.toString(),
+                                      'review_summary': _reviewSummary,
+                                      'review_text': _reviewText,
+                                    }));
+                                if (response.statusCode == 200) {
+                                // Successful response
+                                final Map<String, dynamic> responseBody = jsonDecode(response.body);
+
+                                if (responseBody['status'] == 'success') {
+                                  AddedState.isAdded = true;
+                      
+                                  
+                                  Navigator.pop(context);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar( 
+                                    const SnackBar(
+                                      content: Text("An error occured, please try again."),
+                                    ),
+                                  );
+                                }
+                              }
+                            }
+                        },
+                        child: Container(
+                          width: double.infinity, // Make the button span from left to right
+                          child: const Text(
+                            "Post",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            ],
+          ),
+        ),]
+      )
+      ),
     ));
   }
 }

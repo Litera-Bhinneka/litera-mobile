@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
@@ -67,6 +69,7 @@ class _ShowReviewState extends State<ShowReview> {
   Future<List<dynamic>> combinedFuture = Future.value(List.empty());
   List<int> ratingSelected= [1,2,3,4,5];
   List<String> _selectedItems = [];
+  late String bookTitle;
 
   final int book_id;
 
@@ -185,6 +188,8 @@ class _ShowReviewState extends State<ShowReview> {
                         // Assuming book.cover is a URL to the cover image
                         Image.network(
                           Uri.encodeFull(book[0].fields.imageLink),
+                          width: 200,
+                          height: 300,
                           fit: BoxFit.contain, // Maintain aspect ratio without cropping
                         ),
                         const SizedBox(height: 16),
@@ -209,8 +214,18 @@ class _ShowReviewState extends State<ShowReview> {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            StarRating(rating: averageRating.toDouble()),
-                            Text(" (${reviews.length} ratings)", style: TextStyle(fontSize: 16),)
+                            Text("${double.parse(averageRating.toStringAsFixed(1))}  ", style: TextStyle(fontSize: 16),),
+                            RatingBarIndicator(
+                                rating: averageRating,
+                                itemBuilder: (context, index) => FaIcon(
+                                  FontAwesomeIcons.solidStar,
+                                  color: Color.fromARGB(255, 255, 207, 63), // Adjust the opacity for partial stars
+                                  size: 20.0,
+                                ),
+                                itemCount: 5,
+                                itemSize: 18,
+                            ),
+                            Text("  (${reviews.length} ratings)", style: TextStyle(fontSize: 16),)
                           ],
                         )
                       ],
@@ -223,7 +238,23 @@ class _ShowReviewState extends State<ShowReview> {
                       showDialog<String>(
                         context: context,
                           builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
-                      );
+                      ).then((result) {
+                      if (result == null) {
+                        setState(() {
+                          // Your refresh logic
+                          if (AddedState.isAdded){
+                            AddedState.isAdded = false;
+                            combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
+                                                          DataFetcher.fetchReviews(book_id)]);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Review added successfully!"),
+                                ),
+                            );
+                          }
+                        });
+                      }
+                    });
                     },
                     child: const Text('Add Review'),
                   );
@@ -255,9 +286,18 @@ class _ShowReviewState extends State<ShowReview> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          StarRating(rating: reviews[index].fields.reviewScore.toDouble()),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
+                          RatingBarIndicator(
+                                rating: reviews[index].fields.reviewScore.toDouble(),
+                                itemBuilder: (context, index) => FaIcon(
+                                  FontAwesomeIcons.solidStar,
+                                  color: Color.fromARGB(255, 255, 207, 63), // Adjust the opacity for partial stars
+                                  size: 20.0,
+                                ),
+                                itemCount: 5,
+                                itemSize: 18,
+                            ),
+                          const SizedBox(height: 4),
                           Text(
                             "${reviews[index].fields.reviewSummary}",
                             style: const TextStyle(
@@ -299,12 +339,24 @@ class _ShowReviewState extends State<ShowReview> {
                       ...filteredReviewItems,
                     ],
                   );
+                  
                 }
               },
             ),
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     showDialog<String>(
+      //       context: context,
+      //         builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: bookTitle),
+      //     );
+      //   },
+      //   child: const Icon(Icons.add),
+      //   backgroundColor: Color.fromARGB(255, 64, 183, 181),
+      //   shape: CircleBorder(),
+      // )
     );
   }
 
