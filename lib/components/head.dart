@@ -3,14 +3,15 @@ import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/main.dart';
 
 class MyHeader extends StatelessWidget {
-  const MyHeader({super.key});
+  final int height;
+  const MyHeader({super.key, required this.height});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
           width: double.infinity,
-          height: 86,
+          height: height.toDouble(),
           decoration: const ShapeDecoration(
               color: Color(0xFF105857),
               shape: RoundedRectangleBorder(
