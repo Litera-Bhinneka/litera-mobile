@@ -927,7 +927,11 @@ class _BookPageState extends State<BookPage> {
           MyHeader(
             height: 86,
           ),
+          SizedBox(height:8),
           ElevatedButton(
+            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
+                            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -936,7 +940,7 @@ class _BookPageState extends State<BookPage> {
                 ),
               );
             },
-            child: Text('Add Book'),
+            child: Text('Add Book', style: TextStyle(color: Colors.white, fontFamily: "Poppins")),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -972,13 +976,19 @@ class _BookPageState extends State<BookPage> {
                 ),
                 SizedBox(width: 8),
                 ElevatedButton(
+                  style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
+                            ),
                   onPressed: search,
-                  child: Text('Search'),
+                  child: Text('Search', style: TextStyle(color: Colors.white, fontFamily: "Poppins")),
                 ),
                 SizedBox(width: 8),
                 ElevatedButton(
+                  style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
+                            ),
                   onPressed: performReset,
-                  child: Text('Reset'),
+                  child: Text('Reset', style: TextStyle(color: Colors.white, fontFamily: "Poppins")),
                 ),
               ],
             ),
@@ -1026,15 +1036,17 @@ class _BookPageState extends State<BookPage> {
                         Text(
                           book.fields.title,
                           style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                              fontSize: 18.0, fontWeight: FontWeight.bold, fontFamily: "Poppins"),
                         ),
-                        SizedBox(height: 10),
-                        Text("Author: ${book.fields.author}"),
-                        const SizedBox(height: 10),
-                        Text('Kategori: ${book.fields.category}'),
-                        const SizedBox(height: 10),
-                        Text('Tahun: ${book.fields.yearOfPublished}'),
+                        SizedBox(height: 8),
+                        Text("Author: ${book.fields.author}", style: TextStyle(fontFamily: "Poppins")),
+                        const SizedBox(height: 5),
+                        Text('Kategori: ${book.fields.category}', style: TextStyle(fontFamily: "Poppins")),
+                        const SizedBox(height: 5),
+                        Text('Tahun: ${book.fields.yearOfPublished}', style: TextStyle(fontFamily: "Poppins")),
+                        const SizedBox(height: 8),
                         ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857))),
                           onPressed: (){
                           Navigator.push(
                               context,
@@ -1043,7 +1055,7 @@ class _BookPageState extends State<BookPage> {
                               ),
                             );
                           },
-                          child: const Text('List Owners'),
+                          child: const Text('List Owners', style: TextStyle(color: Colors.white, fontFamily: "Poppins")),
                         )
                       ],
                     ),
