@@ -7,12 +7,14 @@ import 'package:intl/intl.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
+import 'package:litera_mobile/apps/catalog/screens/catalog.dart';
 import 'package:litera_mobile/apps/review/components/multiselect.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
 import 'package:litera_mobile/apps/review/pages/add_review.dart';
 import 'package:litera_mobile/apps/review/utils/util.dart';
 import 'package:litera_mobile/components/head.dart';
+import 'package:litera_mobile/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -499,17 +501,15 @@ class _ShowReviewState extends State<ShowReview> {
                     } else {
                       reviewPage = Column(
                       children: [
-                        bookDetails,
-                        // addReviewButton,
-                        filterButton,
-                        SizedBox(height: 8),
-                        ...filteredReviewItems,
-                        const SizedBox(height: 25),
-                      ],
-                    );
-
+                          bookDetails,
+                          // addReviewButton,
+                          filterButton,
+                          SizedBox(height: 8),
+                          ...filteredReviewItems,
+                          const SizedBox(height: 25),
+                          ],
+                      );
                     } 
-
                     // Combine book details and review items in the Column
                     return reviewPage;
                   }
@@ -519,39 +519,82 @@ class _ShowReviewState extends State<ShowReview> {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog<String>(
-            context: context,
-              builder: (BuildContext context) => ReviewDialog(
-                book_id: BookState.bookId,
-              book_title: BookState.bookTitle
-              ),
-          ).then((result) {
-                          if (result == null) {
-                            setState(() {
-                              // Your refresh logic
-                              if (AddedState.isAdded) {
-                                AddedState.isAdded = false;
-                                combinedFuture = Future.wait([
-                                  DataFetcher.fetchBooks(book_id),
-                                  DataFetcher.fetchReviews(book_id)
-                                ]);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Review added successfully!"),
-                                  ),
-                                );
-                              }
-                            });
+        floatingActionButton: Stack(
+          children: [
+            Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: FloatingActionButton(
+                
+              child: const Icon(Icons.arrow_back),
+              backgroundColor: Color(0xFF105857),
+              foregroundColor: Colors.white,
+              shape: CircleBorder(),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyHomePage(title: "LITERA")),
+                );
+                
+              }
+            ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FloatingActionButton(
+              onPressed: () {
+                if (UserLoggedIn.user.role != "guest"){
+                showDialog<String>(
+                  context: context,
+                    builder: (BuildContext context) => ReviewDialog(
+                      book_id: BookState.bookId,
+                    book_title: BookState.bookTitle
+                    ),
+                  ).then((result) {
+                        if (result == null) {
+                          setState(() {
+                            // Your refresh logic
+                            if (AddedState.isAdded) {
+                              AddedState.isAdded = false;
+                              combinedFuture = Future.wait([
+                                DataFetcher.fetchBooks(book_id),
+                                DataFetcher.fetchReviews(book_id)
+                              ]);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Review added successfully!"),
+                                ),
+                              );
+                            }
+                          });
                           }
                         });;
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: Color(0xFF105857),
-        foregroundColor: Colors.white,
-        shape: CircleBorder(),
-      ),
+                      }else{
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage(
+                                    title: "Login",
+                                  )),
+                          );
+                        }
+                      },
+
+              child: const Icon(Icons.add),
+              backgroundColor: Color(0xFF105857),
+              foregroundColor: Colors.white,
+              shape: CircleBorder(),
+            ),
+            ),
+          ),
+            
+            ]
+      )
     );
   }  
 }
