@@ -40,7 +40,29 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
         }
     }
     return list_recommendation;
-}
+  }
+  Future<void> deleteObject(int objectId) async {
+    final response = await http.delete(
+      Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/recommendation/delete-object/$objectId/'),
+    );
+    if (response.statusCode == 200) {
+      // Deletion successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Recommendation deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      // Deletion not successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete object.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
 Widget build(BuildContext context) {
@@ -79,7 +101,7 @@ Widget build(BuildContext context) {
                 String date = DateFormat("dd MMMM yyyy 'at' h:mm a").format(recommendation.fields.recommendationDate);
                 
                 return Card(
-                  color: Color(0xFFDDDDDD),
+                  color: recommendation.fields.recommenderName == UserLoggedIn.user.username ? Color.fromARGB(255, 64, 183, 181) : Color(0xFFDDDDDD),
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -216,6 +238,24 @@ Widget build(BuildContext context) {
                           ),
                           textAlign: TextAlign.left,
                         ),
+                        recommendation.fields.recommenderName == UserLoggedIn.user.username ? 
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Divider(),
+                              GestureDetector(
+                                onTap: () async{
+                                  deleteObject(recommendation.pk);
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red, // Set your desired color
+                                  size: 24.0, // Set your desired size
+                                ),
+                              ),
+                            ]
+                          ,) : Container()
                       ],
                     ),
                   ),
