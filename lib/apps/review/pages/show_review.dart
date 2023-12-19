@@ -11,6 +11,7 @@ import 'package:litera_mobile/apps/review/components/multiselect.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:litera_mobile/apps/review/models/Review.dart';
 import 'package:litera_mobile/apps/review/pages/add_review.dart';
+import 'package:litera_mobile/apps/review/utils/util.dart';
 import 'package:litera_mobile/components/head.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -162,7 +163,10 @@ class _ShowReviewState extends State<ShowReview> {
                       Text(
                         "Tidak ada data item.",
                         style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                            TextStyle(color: Color(0xff59A5D8), 
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.normal,
+                            fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -205,12 +209,18 @@ class _ShowReviewState extends State<ShowReview> {
                               book[0].fields.title,
                               style: const TextStyle(
                                 fontSize: 18.0,
+                                fontFamily: 'Poppins',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 10),
                             ReadMoreText(
                               "${book[0].fields.description}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w200,
+                              ),
                               trimLines: 3,
                               colorClickableText:
                                   Color.fromARGB(255, 63, 101, 240),
@@ -219,10 +229,12 @@ class _ShowReviewState extends State<ShowReview> {
                               trimExpandedText: '\nRead less',
                               lessStyle: TextStyle(
                                   fontSize: 14,
+                                  fontFamily: "Poppins",
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 63, 101, 240)),
                               moreStyle: TextStyle(
                                   fontSize: 14,
+                                  fontFamily: "Poppins",
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 63, 101, 240)),
                             ),
@@ -231,7 +243,7 @@ class _ShowReviewState extends State<ShowReview> {
                               children: [
                                 Text(
                                   "${double.parse(averageRating.toStringAsFixed(1))}  ",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16, fontFamily: "Poppins",),
                                 ),
                                 RatingBarIndicator(
                                   rating: averageRating,
@@ -246,7 +258,7 @@ class _ShowReviewState extends State<ShowReview> {
                                 ),
                                 Text(
                                   "  (${reviews.length} ratings)",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16, fontFamily: "Poppins", fontWeight: FontWeight.w200),
                                 )
                               ],
                             )
@@ -255,6 +267,9 @@ class _ShowReviewState extends State<ShowReview> {
                       ));
 
                   Widget addReviewButton = TextButton(
+                    style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
+                          ),
                     onPressed: () {
                       if (UserLoggedIn.user.role != "guest") {
                         showDialog<String>(
@@ -291,12 +306,23 @@ class _ShowReviewState extends State<ShowReview> {
                         );
                       }
                     },
-                    child: const Text('Add Review'),
+                    child: const Text('Add Review', 
+                                      style: TextStyle(fontFamily: "Poppins", 
+                                                      fontSize: 16,
+                                                      color: Color(0xFFDDDDDD),
+                                                      fontWeight: FontWeight.bold),),
                   );
 
                   Widget filterButton = ElevatedButton(
                     onPressed: _showMultiSelect,
-                    child: const Text('Rating Filter'),
+                    style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
+                          ),
+                    child: const Text('Rating Filter', 
+                                      style: TextStyle(fontFamily: "Poppins", 
+                                                      fontSize: 16,
+                                                      color: Color(0xFFDDDDDD),
+                                                      fontWeight: FontWeight.bold),),
                   );
                   print(_selectedItems);
                   ratingSelected = extractNumericValues(_selectedItems);
@@ -320,6 +346,7 @@ class _ShowReviewState extends State<ShowReview> {
                             style: const TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -341,11 +368,17 @@ class _ShowReviewState extends State<ShowReview> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
                             ),
                           ),
                           const SizedBox(height: 8),
                           ReadMoreText(
                             "${reviews[index].fields.reviewText}",
+                            style: const TextStyle(
+                                fontSize: 15,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w200,
+                              ),
                             trimLines: 3,
                             colorClickableText:
                                 Color.fromARGB(255, 63, 101, 240),
@@ -354,17 +387,22 @@ class _ShowReviewState extends State<ShowReview> {
                             trimExpandedText: '\nRead less',
                             lessStyle: TextStyle(
                                 fontSize: 14,
+                                fontFamily: "Poppins",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 63, 101, 240)),
                             moreStyle: TextStyle(
                                 fontSize: 14,
+                                fontFamily: "Poppins",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 63, 101, 240)),
                           ),
                           const SizedBox(height: 15),
                           // 'dd MMMM yyyy "at" h:mm a'
                           Text(
-                              "${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}")
+                              "${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}",
+                              style: TextStyle(fontFamily: "Poppins", 
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.normal))
                         ],
                       ),
                     ),
@@ -378,32 +416,87 @@ class _ShowReviewState extends State<ShowReview> {
                     return ratingSelected.contains(reviewScore);
                   }).toList();
 
-                  // Combine book details and review items in the Column
-                  return Column(
+                  Widget reviewPage;
+
+                  if (reviews.length == 0) {
+                    reviewPage = Column(
+                      children: [
+                        bookDetails,
+                        // addReviewButton,
+                        SizedBox(height: 8),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Color(0xFFDDDDDD)),
+                          // color: Color.fromARGB(255, 173, 175, 170), // Set the background color of the container
+                          child: Text(
+                            "No reviews yet, be the first to review!",
+                            style: TextStyle(
+                              color: Colors.black, // Set the text color
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                      ],
+                    );
+                  } else {
+                    reviewPage = Column(
                     children: [
                       bookDetails,
-                      addReviewButton, // Optional divider between book details and reviews
+                      // addReviewButton,
                       filterButton,
                       ...filteredReviewItems,
                     ],
                   );
+
+                  } 
+
+                  // Combine book details and review items in the Column
+                  return reviewPage;
                 }
               },
             ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     showDialog<String>(
-      //       context: context,
-      //         builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: bookTitle),
-      //     );
-      //   },
-      //   child: const Icon(Icons.add),
-      //   backgroundColor: Color.fromARGB(255, 64, 183, 181),
-      //   shape: CircleBorder(),
-      // )
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog<String>(
+            context: context,
+              builder: (BuildContext context) => ReviewDialog(
+                book_id: BookState.bookId,
+              book_title: BookState.bookTitle
+              ),
+          ).then((result) {
+                          if (result == null) {
+                            setState(() {
+                              // Your refresh logic
+                              if (AddedState.isAdded) {
+                                AddedState.isAdded = false;
+                                combinedFuture = Future.wait([
+                                  DataFetcher.fetchBooks(book_id),
+                                  DataFetcher.fetchReviews(book_id)
+                                ]);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Review added successfully!"),
+                                  ),
+                                );
+                              }
+                            });
+                          }
+                        });;
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Color(0xFF105857),
+        foregroundColor: Colors.white,
+        shape: CircleBorder(),
+      )
     );
   }
 }

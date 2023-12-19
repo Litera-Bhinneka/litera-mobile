@@ -835,8 +835,10 @@ import 'dart:convert';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/catalog/screens/add_book.dart';
 import 'package:litera_mobile/apps/exchange/screens/list_owners.dart';
+import 'package:litera_mobile/apps/review/pages/add_review.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 import 'package:litera_mobile/apps/catalog/screens/add_book.dart';
+import 'package:litera_mobile/apps/review/utils/util.dart';
 import 'package:litera_mobile/components/head.dart';
 import 'package:litera_mobile/components/status.dart';
 import 'package:litera_mobile/main.dart';
@@ -991,6 +993,9 @@ class _BookPageState extends State<BookPage> {
                     // Status.selectedBookId = book.pk;
                     // Status.currentPageIndex = 4;
                     // print(Status.currentPageIndex);
+                    BookState.bookId = book.pk;
+                    BookState.bookTitle = book.fields.title;
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(

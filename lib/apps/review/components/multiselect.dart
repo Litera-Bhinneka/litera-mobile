@@ -38,13 +38,13 @@ _MultiSelectState({required this.selectedItems});
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Rating'),
+      title: const Text('Rating', style: TextStyle(fontFamily: "Poppins", fontSize: 18, fontWeight: FontWeight.bold),),
       content: SingleChildScrollView(
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
                     value: selectedItems.contains(item),
-                    title: Text(item),
+                    title: Text(item, style: TextStyle(fontFamily: "Poppins", fontSize:16, fontWeight: FontWeight.normal)),
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (isChecked) => _itemChange(item, isChecked!),
                   ))
@@ -67,7 +67,7 @@ _MultiSelectState({required this.selectedItems});
                 width: double.infinity, // Make the button span from left to right
                 child: const Text(
                   "Apply",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 16, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ),
