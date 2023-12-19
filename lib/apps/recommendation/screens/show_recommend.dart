@@ -40,8 +40,31 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
         }
     }
     return list_recommendation;
-}
+  }
+  Future<void> deleteObject(int objectId) async {
+    final response = await http.delete(
+      Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/recommendation/delete-object/$objectId/'),
+    );
+    if (response.statusCode == 200) {
+      // Deletion successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Recommendation deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      // Deletion not successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete object.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
+  bool isShown = false;
   @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -77,14 +100,32 @@ Widget build(BuildContext context) {
               (BuildContext context, int index) {
                 Recommendation recommendation = recommendations[index];
                 String date = DateFormat("dd MMMM yyyy 'at' h:mm a").format(recommendation.fields.recommendationDate);
-                
+                if (!(UserLoggedIn.user.role == "guest")){
                 return Card(
-                  color: Color(0xFFDDDDDD),
+                  color: recommendation.fields.recommenderName == UserLoggedIn.user.username ? Color.fromARGB(255, 64, 183, 181) : Color(0xFFDDDDDD),
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
+                        recommendation.fields.recommenderName == UserLoggedIn.user.username || UserLoggedIn.user.role == "admin"? 
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                              Divider(),
+                              GestureDetector(
+                                onTap: () async{
+                                  deleteObject(recommendation.pk);
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red, // Set your desired color
+                                  size: 24.0, // Set your desired size
+                                ),
+                              ),
+                            ]
+                          ,) :  Divider(),
                         const Row(
                           children: [
                             Expanded(
@@ -216,14 +257,32 @@ Widget build(BuildContext context) {
                           ),
                           textAlign: TextAlign.left,
                         ),
+                        
                       ],
                     ),
                   ),
                 );
+                }else{
+                  if (!isShown){
+                    isShown = true;
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Guests cannot view recommendations.",
+                            style: TextStyle(color: Color(0xFF105857), fontSize: 20),
+                          ),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    );
+                  }
+                }
               },
               childCount: recommendations.length,
             ),
-          ),
+          )
           ],
           );
         }
@@ -231,13 +290,22 @@ Widget build(BuildContext context) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
+        !(UserLoggedIn.user.role == "guest") ?
         showDialog<String>(
           context: context,
             builder: (BuildContext context) => RecommendationDialog(),
+        )
+        : 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Guests cannot perform this action.'),
+            duration: Duration(seconds: 2),
+          ),
         );
       },
       child: const Icon(Icons.add),
-      backgroundColor: Color.fromARGB(255, 64, 183, 181),
+      backgroundColor: Color(0xFF105857),
+      foregroundColor: Colors.white,
       shape: CircleBorder(),
     )
   );

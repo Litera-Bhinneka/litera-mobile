@@ -5,12 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/review/components/star_rating.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
+import 'package:litera_mobile/apps/review/utils/util.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-
-class AddedState {
-  static bool isAdded = false;
-}
 
 class ReviewDialog extends StatefulWidget {
   const ReviewDialog({Key? key, required this.book_id, required this.book_title}) : super(key: key);
@@ -57,10 +54,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       'Share your thoughts about this book!',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        // fontFamily: 'Poppins',
+                        fontFamily: 'Poppins',
                         color: Color.fromARGB(255, 31, 31, 31),
                         fontSize: 20,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -79,10 +76,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       'Review Summary',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        // fontFamily: 'Poppins',
+                        fontFamily: 'Poppins',
                         color: Color.fromARGB(255, 31, 31, 31),
                         fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -94,7 +91,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 
               child: TextFormField(
                   style: const TextStyle(
-                                  // fontFamily: 'Poppins',
+                                  fontFamily: 'Poppins',
                                   fontSize: 15,
                                   color: Color.fromARGB(255, 31, 31, 31)
                                   ),
@@ -103,7 +100,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                     fillColor: Color(0xE1F3F2F2), 
                     hintText: 'My new FAVORITE COOKBOOK!',
                     hintStyle: TextStyle(
-                                  // fontFamily: 'Poppins',
+                                  fontFamily: 'Poppins',
                                   fontSize: 15,
                                   color: Color.fromARGB(255, 31, 31, 31),
                                   fontWeight: FontWeight.normal,
@@ -141,10 +138,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       'Your Review',  
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        // fontFamily: 'Poppins',
+                        fontFamily: 'Poppins',
                         color: Color.fromARGB(255, 31, 31, 31),
                         fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -165,7 +162,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       fillColor: Color(0xE1F3F2F2), 
                       hintText: 'I recently bought this book and I love it so much!',
                       hintStyle: TextStyle(
-                                    // fontFamily: 'Poppins',
+                                    fontFamily: 'Poppins',
                                     fontSize: 15,
                                     color: Color.fromARGB(255, 31, 31, 31),
                                     fontWeight: FontWeight.normal,
@@ -213,8 +210,8 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 child: Text(
                   "Please rate the book!",
                   style: TextStyle(
-                    color: Color.fromARGB(255, 176, 52, 43),
-                    fontSize: 13,
+                    color: Color.fromARGB(226, 177, 52, 43),
+                    fontSize: 12.5,
                   ),
                 ),
               ),
@@ -252,7 +249,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                                 // }));
 
                                 final http.Response response = await http.post(
-                                    Uri.parse("https://litera-b06-tk.pbp.cs.ui.ac.id/review/add-review-flutter/"),
+                                    Uri.parse("http://localhost:8000/review/add-review-flutter/"),
                                     headers: <String, String>{
                                       'Content-Type': 'application/json',
                                     },
@@ -300,7 +297,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                           width: double.infinity, // Make the button span from left to right
                           child: const Text(
                             "Post",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 15, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ),

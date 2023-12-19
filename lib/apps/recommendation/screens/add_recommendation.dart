@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
+import 'package:litera_mobile/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -192,9 +193,11 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
                                 );
                                  
                                 Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ShowRecommendation()),
-                                );
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MyHomePage(title: "LITERA")),
+                                  );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(

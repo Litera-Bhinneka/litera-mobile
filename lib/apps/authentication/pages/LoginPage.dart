@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 18,
-                                  color: Color.fromARGB(255, 190, 174, 161)),
+                                  color: Color.fromARGB(255, 100, 94, 89)),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Color.fromARGB(195, 246, 243,
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                 labelStyle: const TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 18,
-                                    color: Color.fromARGB(255, 190, 174, 161)),
+                                    color: Color.fromARGB(255, 100, 94, 89)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0)),
                                 enabledBorder: OutlineInputBorder(
@@ -190,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 18,
-                                  color: Color.fromARGB(255, 190, 174, 161)),
+                                  color: Color.fromARGB(255, 100, 94, 89)),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Color.fromARGB(195, 246, 243,
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                                 labelStyle: const TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 18,
-                                    color: Color.fromARGB(255, 190, 174, 161)),
+                                    color: Color.fromARGB(255, 100, 94, 89)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0)),
                                 enabledBorder: OutlineInputBorder(
@@ -287,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text(
-                                        "An error occured, please try again."),
+                                        "Wrong password, please try again!"),
                                   ));
                                 }
                               },
