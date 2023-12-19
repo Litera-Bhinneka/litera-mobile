@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
+import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/exchange/models/Offer.dart';
 import 'package:litera_mobile/apps/exchange/screens/detail_offer.dart';
 import 'package:litera_mobile/components/head.dart';
@@ -65,19 +67,46 @@ class _ListOffersState extends State<ListOffers>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (UserLoggedIn.user.role == "guest") {
-            return const Column(
+            return Column(
               children: [
-                MyHeader(height: 86),
+                const MyHeader(height: 86),
                 Expanded(
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "You must login to use this feature.",
-                      style: TextStyle(
+                    RichText(
+                      text: TextSpan(
+                        style: const TextStyle(
                           color: Color(0xFF105857),
                           fontSize: 20,
-                          fontFamily: 'Poppins'),
+                          fontFamily: 'Poppins',
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: "You must ",
+                          ),
+                          TextSpan(
+                            text: "login",
+                            style: const TextStyle(
+                              decoration: TextDecoration
+                                  .underline, // Add an underline decoration
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginPage(
+                                            title: "Login",
+                                          )),
+                                );
+                              },
+                          ),
+                          const TextSpan(
+                            text: " to use this feature.",
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ))
