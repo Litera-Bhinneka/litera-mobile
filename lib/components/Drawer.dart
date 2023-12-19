@@ -6,6 +6,7 @@ import 'package:litera_mobile/apps/exchange/screens/list_owners.dart';
 
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
+import 'package:litera_mobile/components/status.dart';
 
 /// Flutter code sample for [NavigationBar].
 
@@ -38,11 +39,12 @@ class _NavigationExampleState extends State<NavigationExample> {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
-            currentPageIndex = index;
+            Status.currentPageIndex = index;
+            Status.pointerPageIndex = index;
           });
         },
+        selectedIndex: Status.pointerPageIndex,
         indicatorColor: Color.fromARGB(255, 64, 183, 181),
-        selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.chrome_reader_mode),
@@ -66,24 +68,37 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
         ],
       ),
-      body: <Widget>[
-        /// Catalog Page
-        BookPage(),
-
-        ///ShowReview(book_id: 35),
-
-        /// Recommendation page
-        ShowRecommendation(),
-
-        /// Exchange page
-        ListOffers(),
-        // ListOwners(id: 2),
-
-        /// Profile page
-        SampleHomePage(),
-      ][currentPageIndex],
+      body:  _getPage(Status.currentPageIndex),
     );
   }
+  Widget _getPage(int index) {
+    Widget page;
+    switch (index) {
+      case 0:
+        page = BookPage(); // Catalog Page
+        break;
+      case 1:
+        page = ShowRecommendation(); // Recommendation page
+        break;
+      case 2:
+        page = ListOffers(); // Exchange page
+        break;
+      case 3:
+        page = SampleHomePage(); // Profile page
+        break;
+      case 4:
+        page = ShowReview(book_id: Status.selectedBookId); // ShowReview page
+        break;
+      default:
+        page = Container(
+          child: Center(
+            child: Text('Error loading page'),
+          ),
+        );
+    }
+    return page;
+  }
+  
 }
 
 class SampleHomePage extends StatelessWidget {

@@ -834,9 +834,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/catalog/screens/add_book.dart';
+import 'package:litera_mobile/apps/exchange/screens/list_owners.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 import 'package:litera_mobile/apps/catalog/screens/add_book.dart';
 import 'package:litera_mobile/components/head.dart';
+import 'package:litera_mobile/components/status.dart';
+import 'package:litera_mobile/main.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({Key? key}) : super(key: key);
@@ -985,12 +988,21 @@ class _BookPageState extends State<BookPage> {
                 var book = displayedProducts[index];
                 return InkWell(
                   onTap: () {
+                    // Status.selectedBookId = book.pk;
+                    // Status.currentPageIndex = 4;
+                    // print(Status.currentPageIndex);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ShowReview(book_id: book.pk),
                       ),
                     );
+                    // Navigator.pushReplacement(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                     builder: (context) =>
+                    //                         MyHomePage(title: "LITERA")),
+                    //               );
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -1017,6 +1029,17 @@ class _BookPageState extends State<BookPage> {
                         Text('Kategori: ${book.fields.category}'),
                         const SizedBox(height: 10),
                         Text('Tahun: ${book.fields.yearOfPublished}'),
+                        ElevatedButton(
+                          onPressed: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListOwners(id: book.pk),
+                              ),
+                            );
+                          },
+                          child: const Text('List Owners'),
+                        )
                       ],
                     ),
                   ),
