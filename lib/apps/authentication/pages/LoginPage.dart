@@ -271,6 +271,8 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                 if (response['status']) {
                                   UserLoggedIn.user = (User(username));
+                                  UserLoggedIn.user.isGuest = false;
+                                  
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text("Successfully logged in!"),
@@ -329,6 +331,27 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 18,
                               color: Color(0xFF105857),
                             ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Route menu ke counter
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyHomePage(title: "LITERA")),
+                          );
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 1, color: Color.fromARGB(255, 152, 111, 248)))),
+                          child: const Text(
+                            'or sign in as a guest',
+                            style: TextStyle(
+                                fontSize: 18, color: Color(0xFF105857),),
                           ),
                         ),
                       ),

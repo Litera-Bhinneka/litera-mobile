@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/catalog/models/Book.dart';
 import 'package:litera_mobile/apps/review/components/multiselect.dart';
@@ -243,26 +244,33 @@ class _ShowReviewState extends State<ShowReview> {
 
                   Widget addReviewButton = TextButton(
                     onPressed: () {
-                      showDialog<String>(
-                        context: context,
-                          builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
-                      ).then((result) {
-                      if (result == null) {
-                        setState(() {
-                          // Your refresh logic
-                          if (AddedState.isAdded){
-                            AddedState.isAdded = false;
-                            combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
-                                                          DataFetcher.fetchReviews(book_id)]);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Review added successfully!"),
-                                ),
-                            );
+                        if (!UserLoggedIn.user.isGuest){
+                          showDialog<String>(
+                            context: context,
+                              builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
+                          ).then((result) {
+                          if (result == null) {
+                            setState(() {
+                              // Your refresh logic
+                              if (AddedState.isAdded){
+                                AddedState.isAdded = false;
+                                combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
+                                                              DataFetcher.fetchReviews(book_id)]);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Review added successfully!"),
+                                    ),
+                                );
+                              }
+                            });
                           }
                         });
+                      }else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage(title: "Login",)),
+                        );
                       }
-                    });
                     },
                     child: const Text('Add Review'),
                   );

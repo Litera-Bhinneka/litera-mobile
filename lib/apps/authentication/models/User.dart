@@ -1,6 +1,7 @@
 // Class untuk menampilkan kerangka User
 class User {
   String username = "";
+  bool isGuest = true;
   User(this.username);
 }
 
