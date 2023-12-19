@@ -272,7 +272,6 @@ class _LoginPageState extends State<LoginPage> {
                                 if (response['status']) {
                                   UserLoggedIn.user = (User(username));
                                   UserLoggedIn.user.role = response['role'];
-                                  print(response['role']);
 
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
@@ -284,8 +283,6 @@ class _LoginPageState extends State<LoginPage> {
                                         builder: (context) =>
                                             MyHomePage(title: "LITERA")),
                                   );
-                                  print(UserLoggedIn.user
-                                      .username); // GET USERNAME OF LOGGED IN USER
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(

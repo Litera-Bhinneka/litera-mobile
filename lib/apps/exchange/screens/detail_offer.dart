@@ -5,6 +5,7 @@ import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:litera_mobile/apps/exchange/models/Offer.dart';
 import 'package:litera_mobile/components/head.dart';
+import 'package:litera_mobile/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +73,8 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 const SizedBox(height: 11),
                 // Display text above the first inventory
                 if (widget.offer.fields.username1 ==
-                    UserLoggedIn.user.username) ...[
+                        UserLoggedIn.user.username ||
+                    UserLoggedIn.user.role == "admin") ...[
                   Text(
                     "${widget.offer.fields.username2} Offered:",
                     style: const TextStyle(
@@ -95,10 +97,10 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 // Display the first inventory vertically
                 Expanded(
                   child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    // padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(100, 106, 114, 1),
+                      color: const Color.fromARGB(255, 154, 161, 171),
                       border: Border.all(
                         color: Colors.black, // Set the color of the border
                         width: 0.5, // Set the width of the border
@@ -168,10 +170,10 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                 // Display the second inventory vertically
                 Expanded(
                   child: Container(
-                    // padding: EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     margin: const EdgeInsets.symmetric(horizontal: 8.0),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(100, 106, 114, 1),
+                      color: const Color.fromARGB(255, 154, 161, 171),
                       border: Border.all(
                         color: Colors.black, // Set the color of the border
                         width: 0.5, // Set the width of the border
@@ -230,7 +232,8 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                     ),
                     const SizedBox(width: 11),
                     if (widget.offer.fields.username1 ==
-                        UserLoggedIn.user.username) ...[
+                            UserLoggedIn.user.username ||
+                        UserLoggedIn.user.role == "admin") ...[
                       ElevatedButton(
                         onPressed: () async {
                           // Handle accept button press
@@ -282,6 +285,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                             ));
                           }
                           Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyHomePage(title: "LITERA"),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF105857),
@@ -335,6 +344,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                             ));
                           }
                           Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyHomePage(title: "LITERA"),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
@@ -388,6 +403,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                             ));
                           }
                           Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyHomePage(title: "LITERA"),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,

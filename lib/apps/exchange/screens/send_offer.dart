@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
 import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:http/http.dart' as http;
-import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
 import 'package:litera_mobile/components/head.dart';
 import 'package:litera_mobile/components/status.dart';
 import 'package:litera_mobile/main.dart';
@@ -145,15 +144,7 @@ class _SendOfferPageState extends State<SendOfferPage> {
                               builder: (context) =>
                                   MyHomePage(title: "LITERA")),
                         );
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => ListOffers()),
-                        // );
                       },
-                      // onPressed: () {
-                      //   print(selectedUserBooks);
-                      //   print(selectedTargetBooks);
-                      // },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF105857),
                       ),
@@ -219,6 +210,7 @@ class _InventoryColumnState extends State<InventoryColumn> {
       String title, List<InventoryBook> inventory, List<InventoryBook> target) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    if (title.length > 18) title = title.substring(1, 18) + "...'s Inventory";
     return Expanded(
       child: Column(
         children: [
@@ -231,19 +223,22 @@ class _InventoryColumnState extends State<InventoryColumn> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: const Color.fromRGBO(174, 191, 214, 1)),
+              color: const Color.fromARGB(255, 154, 161, 171),
+              border: Border.all(
+                color: Colors.black,
+              ),
             ),
             height: screenHeight * 0.35,
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
+                crossAxisCount: 2,
               ),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => onBookTap(inventory[index], inventory, target),
                   child: Card(
                     elevation: 0,
+                    color: const Color.fromARGB(255, 154, 161, 171),
                     // shape: RoundedRectangleBorder(
                     //   side: BorderSide(color: Colors.black), // Set border color
                     // ),
@@ -260,6 +255,7 @@ class _InventoryColumnState extends State<InventoryColumn> {
                           'Amount: ${inventory[index].amount}',
                           style: TextStyle(
                             fontSize: screenWidth * 0.02,
+                            fontWeight: FontWeight.bold,
                             fontFamily: 'Poppins',
                           ),
                         ),

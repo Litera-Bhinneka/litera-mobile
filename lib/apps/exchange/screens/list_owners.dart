@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
+import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/exchange/models/Owner.dart';
 import 'package:litera_mobile/apps/exchange/screens/send_offer.dart';
 import 'package:litera_mobile/components/head.dart';
@@ -17,8 +18,14 @@ class ListOwners extends StatefulWidget {
 
 class _ListOwnersState extends State<ListOwners> {
   Future<List<Owner>> fetchProduct() async {
-    var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
+    var url;
+    if (UserLoggedIn.user.role != "guest") {
+      url = Uri.parse(
+          'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
+    } else {
+      url = Uri.parse(
+          'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/%/');
+    }
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -51,7 +58,7 @@ class _ListOwnersState extends State<ListOwners> {
                     child: Text(
                       "There are no users with this book.",
                       style: TextStyle(
-                          color: Color(0xff59A5D8),
+                          color: Color(0xFF105857),
                           fontSize: 20,
                           fontFamily: 'Poppins'),
                     ),
@@ -70,17 +77,17 @@ class _ListOwnersState extends State<ListOwners> {
                                 // padding:
                                 //     const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    top: BorderSide(
-                                      color: Color.fromRGBO(174, 191, 214, 1),
-                                      width: 0.5,
-                                    ),
-                                    bottom: BorderSide(
-                                      color: Color.fromRGBO(174, 191, 214, 1),
-                                      width: 0.5,
-                                    ),
-                                  )),
+                                  // decoration: const BoxDecoration(
+                                  //     border: Border(
+                                  //   top: BorderSide(
+                                  //     color: Color.fromRGBO(174, 191, 214, 1),
+                                  //     width: 0.5,
+                                  //   ),
+                                  //   bottom: BorderSide(
+                                  //     color: Color.fromRGBO(174, 191, 214, 1),
+                                  //     width: 0.5,
+                                  //   ),
+                                  // )),
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment:
@@ -100,28 +107,62 @@ class _ListOwnersState extends State<ListOwners> {
                                           ),
                                         ),
                                         const SizedBox(width: 11),
-                                        Text(
-                                          "${snapshot.data![index].fields.username}",
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins',
+                                        if (snapshot
+                                                .data![index].fields.username
+                                                .toString()
+                                                .length >
+                                            18) ...[
+                                          Text(
+                                            snapshot.data![index].fields
+                                                    .username
+                                                    .toString()
+                                                    .substring(1, 18) +
+                                                "...",
+                                            style: const TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins',
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                        ),
+                                        ] else ...[
+                                          Text(
+                                            snapshot
+                                                .data![index].fields.username,
+                                            style: const TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins',
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ]
                                       ]),
                                       ElevatedButton(
                                         onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SendOfferPage(
-                                                      username: snapshot
-                                                          .data![index]
-                                                          .fields
-                                                          .username),
-                                            ),
-                                          );
+                                          if (UserLoggedIn.user.role !=
+                                              "guest") {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SendOfferPage(
+                                                        username: snapshot
+                                                            .data![index]
+                                                            .fields
+                                                            .username),
+                                              ),
+                                            );
+                                          } else {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const LoginPage(
+                                                        title: "Login",
+                                                      )),
+                                            );
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
