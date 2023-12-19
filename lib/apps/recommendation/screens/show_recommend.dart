@@ -23,7 +23,7 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
   Future<List<Recommendation>> fetchRecommendation() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://localhost:8000/recommendation/get-recommendation-json/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/recommendation/get-recommendation-json/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
