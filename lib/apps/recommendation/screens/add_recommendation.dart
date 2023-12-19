@@ -17,9 +17,44 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
   final _formKey = GlobalKey<FormState>();
   String _book_title = "";
   String _another_book_title = "";
-
   String _description = "";
 
+  late List<String> userItems;
+  String username = UserLoggedIn.user.username;
+  Future<List<String>> fetchUserItem() async {
+    var url = Uri.parse(
+        'http://localhost:8000/recommendation/get-user-inventory-flutter/$username/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    List<String> items = List<String>.from(data['book_titles'].map((dynamic item) {
+      if (item != null) {
+        return item.toString();
+      }
+      return '';
+    }));
+    return items;
+  }
+  late List<DropdownMenuItem<String>> dropdownItems;
+  @override
+  void initState() {
+    super.initState();
+    userItems = [];
+    dropdownItems = [];
+    fetchUserItem().then((List<String> result) {
+      setState(() {
+        userItems = result;
+        dropdownItems = userItems.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList();
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -44,22 +79,25 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
                 fontFamily: 'Poppins',
               ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Book title 1',
-                labelText: 'book title',
-              ),
-              onChanged: (value) {
+            DropdownButtonFormField<String>(
+              items: dropdownItems.length < 2 ? null : dropdownItems,
+              onChanged: dropdownItems.length < 2 ? null: (String? value) {
                 setState(() {
-                  _book_title = value;
+                  _book_title = value!;
                 });
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Book title cannot be empty';
+                }else if (value == _another_book_title) {
+                  return 'You cannot recommend the same book';
                 }
                 return null;
               },
+              decoration: InputDecoration(
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Select Book Title',
+              ),
+              isExpanded: true,
             ),
             const SizedBox(height: 20),
             Text(
@@ -69,22 +107,25 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
                 fontFamily: 'Poppins',
               ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Book title 2',
-                labelText: 'book title',
-              ),
-              onChanged: (value) {
+            DropdownButtonFormField<String>(
+              items: dropdownItems.length < 2 ? null : dropdownItems,
+              onChanged: dropdownItems.length < 2 ? null: (String? value) {
                 setState(() {
-                  _another_book_title = value;
+                  _another_book_title = value!;
                 });
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Book title cannot be empty';
+                }else if (value == _book_title) {
+                  return 'You cannot recommend the same book';
                 }
                 return null;
               },
+              decoration: InputDecoration(
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Select Book Title',
+              ),
+              isExpanded: true,
             ),
             const SizedBox(height: 20),
             Text(
@@ -97,7 +138,7 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
             TextFormField(
               decoration: InputDecoration(
                 hintText: 'description',
-                labelText: 'description',
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Description',
               ),
               onChanged: (value) {
                 setState(() {
@@ -110,6 +151,7 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
                 }
                 return null;
               },
+              enabled: dropdownItems.length >= 2,
             ),
             const SizedBox(height: 20),
             Row(
@@ -180,7 +222,7 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
                             MaterialStateProperty.all(Colors.red),
                       ),
                       onPressed: () async {
-                        
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         "Cancel",
