@@ -50,7 +50,10 @@ class _ListOwnersState extends State<ListOwners> {
                   return const Center(
                     child: Text(
                       "There are no users with this book.",
-                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                      style: TextStyle(
+                          color: Color(0xff59A5D8),
+                          fontSize: 20,
+                          fontFamily: 'Poppins'),
                     ),
                   );
                 } else {
@@ -102,6 +105,7 @@ class _ListOwnersState extends State<ListOwners> {
                                           style: const TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins',
                                           ),
                                         ),
                                       ]),
@@ -119,12 +123,35 @@ class _ListOwnersState extends State<ListOwners> {
                                             ),
                                           );
                                         },
-                                        child: const Text('Send Offer'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF105857),
+                                        ),
+                                        child: const Text(
+                                          'Send Offer',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ))),
                       ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Back',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 11),
                     ],
                   );
                 }

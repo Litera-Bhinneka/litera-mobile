@@ -57,11 +57,14 @@ class _LoginPageState extends State<LoginPage> {
                 Scaffold(
                   backgroundColor: Color.fromRGBO(202, 209, 218, 1),
                   body: SingleChildScrollView(
-                    child: Column(
+                      child: Column(
                     children: [
-                      MyHeader(height: 130,),
+                      MyHeader(
+                        height: 130,
+                      ),
                       const Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 24.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 36.0, vertical: 24.0),
                         child: Center(
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -78,11 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      
                       Column(
                         children: [
-                            const Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 0.0),
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 36.0, vertical: 0.0),
                             child: Center(
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -104,35 +107,38 @@ class _LoginPageState extends State<LoginPage> {
                                 horizontal: 34.0, vertical: 10.0),
                             child: TextFormField(
                               style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 190, 174, 161)
-                                ),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 18,
+                                  color: Color.fromARGB(255, 190, 174, 161)),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                fillColor: Color.fromARGB(195, 246, 243,
+                                    243), // Set the background color here
                                 hintText: " Masukkan Username",
                                 labelText: " Username",
-                                labelStyle:
-                                    const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      color:Color.fromARGB(255, 190, 174, 161)),
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(221, 210, 210, 209),
+                                      width: 4.0),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(221, 210, 210, 209),
+                                      width: 4.0),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+
                                 hintStyle: const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      color:Color.fromARGB(255, 190, 174, 161)),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -155,7 +161,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           const Padding(
-                            padding: const EdgeInsets.only(left: 36.0, right: 36.0, top: 22.0, bottom: 5.0),
+                            padding: const EdgeInsets.only(
+                                left: 36.0,
+                                right: 36.0,
+                                top: 22.0,
+                                bottom: 5.0),
                             child: Center(
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -178,35 +188,38 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextFormField(
                               obscureText: true,
                               style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 190, 174, 161)
-                                ),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 18,
+                                  color: Color.fromARGB(255, 190, 174, 161)),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Color.fromARGB(195, 246, 243, 243), // Set the background color here
+                                fillColor: Color.fromARGB(195, 246, 243,
+                                    243), // Set the background color here
                                 hintText: " ● ● ● ● ●",
                                 labelText: " Password",
-                                labelStyle:
-                                    const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      color:Color.fromARGB(255, 190, 174, 161)),
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 190, 174, 161)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(221, 210, 210, 209), width: 4.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(221, 210, 210, 209),
+                                      width: 4.0),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(221, 210, 210, 209),
+                                      width: 4.0),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+
                                 hintStyle: const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      color:Color.fromARGB(255, 190, 174, 161)),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 190, 174, 161)),
                               ),
                               onChanged: (String? value) {
                                 setState(() {
@@ -239,17 +252,19 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color(0xFF105857),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2), // Shadow color
+                                  color: Colors.black
+                                      .withOpacity(0.2), // Shadow color
                                   spreadRadius: 2, // Spread radius
                                   blurRadius: 5, // Blur radius
-                                  offset: Offset(0, 2), // Offset in the x, y direction
+                                  offset: Offset(
+                                      0, 2), // Offset in the x, y direction
                                 ),
                               ],
                             ),
                             child: TextButton(
                               onPressed: () async {
                                 final response = await request.login(
-                                    "http://localhost:8000/auth/login/",
+                                    "https://litera-b06-tk.pbp.cs.ui.ac.id/auth/login/",
                                     {
                                       'username': username,
                                       'password': password1,
@@ -305,11 +320,15 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: const BoxDecoration(
                               border: Border(
                                   bottom: BorderSide(
-                                      width: 1, color: Color.fromARGB(255, 152, 111, 248)))),
+                                      width: 1,
+                                      color:
+                                          Color.fromARGB(255, 152, 111, 248)))),
                           child: const Text(
                             'Not registered? Create account',
                             style: TextStyle(
-                                fontSize: 18, color: Color(0xFF105857),),
+                              fontSize: 18,
+                              color: Color(0xFF105857),
+                            ),
                           ),
                         ),
                       ),
@@ -317,8 +336,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 35,
                       ),
                     ],
-                    )
-                  ),
+                  )),
                 )
               ],
             )));

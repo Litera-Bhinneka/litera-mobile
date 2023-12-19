@@ -4,6 +4,8 @@ import 'package:litera_mobile/apps/exchange/models/InventoryBook.dart';
 import 'package:http/http.dart' as http;
 import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
 import 'package:litera_mobile/components/head.dart';
+import 'package:litera_mobile/components/status.dart';
+import 'package:litera_mobile/main.dart';
 import 'dart:convert';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +60,13 @@ class _SendOfferPageState extends State<SendOfferPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Text(
+              'Error: ${snapshot.error}',
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+              ),
+            ));
           } else {
             List<InventoryBook> userInventory = snapshot.data![0];
             List<InventoryBook> targetInventory = snapshot.data![1];
@@ -88,7 +96,13 @@ class _SendOfferPageState extends State<SendOfferPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Back'),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 11),
                     ElevatedButton(
@@ -104,19 +118,37 @@ class _SendOfferPageState extends State<SendOfferPage> {
                         if (response['status'] == 'success') {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text('Successfully Created the Offer'),
+                            content: Text(
+                              'Successfully Created the Offer',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
                           ));
                         } else {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content:
-                                Text('An error has occured. Please try again'),
+                            content: Text(
+                              'An error has occured. Please try again',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
                           ));
                         }
+                        Status.currentPageIndex = 2;
+                        Status.pointerPageIndex = 2;
+
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => ListOffers()),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MyHomePage(title: "LITERA")),
                         );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => ListOffers()),
+                        // );
                       },
                       // onPressed: () {
                       //   print(selectedUserBooks);
@@ -127,8 +159,7 @@ class _SendOfferPageState extends State<SendOfferPage> {
                       ),
                       child: const Text('Send Offer',
                           style: TextStyle(
-                            color: Colors.white,
-                          )),
+                              color: Colors.white, fontFamily: 'Poppins')),
                     ),
                   ],
                 )),
@@ -194,7 +225,9 @@ class _InventoryColumnState extends State<InventoryColumn> {
           Text(
             title,
             style: TextStyle(
-                fontSize: screenWidth * 0.025, fontWeight: FontWeight.bold),
+                fontSize: screenWidth * 0.025,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins'),
           ),
           Container(
             decoration: BoxDecoration(
@@ -227,6 +260,7 @@ class _InventoryColumnState extends State<InventoryColumn> {
                           'Amount: ${inventory[index].amount}',
                           style: TextStyle(
                             fontSize: screenWidth * 0.02,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       ],

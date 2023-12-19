@@ -54,7 +54,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
             return Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
             return const Center(
-              child: Text('No inventory data available.'),
+              child: Text(
+                'No inventory data available.',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
             );
           } else {
             List<InventoryBook> firstInventory = snapshot.data![0];
@@ -71,18 +76,18 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                   Text(
                     "${widget.offer.fields.username2} Offered:",
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'),
                     textAlign: TextAlign.center,
                   ),
                 ] else ...[
                   const Text(
                     'You Offered:',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -93,6 +98,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 8.0),
                     // padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
+                      color: const Color.fromRGBO(100, 106, 114, 1),
                       border: Border.all(
                         color: Colors.black, // Set the color of the border
                         width: 0.5, // Set the width of the border
@@ -119,7 +125,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                                 width: 80,
                                 fit: BoxFit.cover,
                               ),
-                              Text('Amount: ${book.amount}'),
+                              Text(
+                                'Amount: ${book.amount}',
+                                style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -138,6 +149,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -147,6 +159,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -158,6 +171,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                     // padding: EdgeInsets.all(2.0),
                     margin: const EdgeInsets.symmetric(horizontal: 8.0),
                     decoration: BoxDecoration(
+                      color: const Color.fromRGBO(100, 106, 114, 1),
                       border: Border.all(
                         color: Colors.black, // Set the color of the border
                         width: 0.5, // Set the width of the border
@@ -183,7 +197,12 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                                 width: 80,
                                 fit: BoxFit.cover,
                               ),
-                              Text('Amount: ${book.amount}'),
+                              Text(
+                                'Amount: ${book.amount}',
+                                style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -201,7 +220,13 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('Back'),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 11),
                     if (widget.offer.fields.username1 ==
@@ -218,32 +243,56 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(
-                                  'Exchange successful. Your Inventory has been updated'),
+                                'Exchange successful. Your Inventory has been updated',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else if (response['status'] == 404 &&
                               response['message'].contains('user')) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(
-                                  'Inventory not found for the specified book and user'),
+                                'Inventory not found for the specified book and user',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else if (response['status'] == 404) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('The specified book is not found.'),
+                              content: Text(
+                                'The specified book is not found.',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Invalid request method'),
+                              content: Text(
+                                'Invalid request method',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           }
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: const Color(0xFF105857),
                         ),
-                        child: const Text('Accept'),
+                        child: const Text(
+                          'Accept',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 11),
                       ElevatedButton(
@@ -257,17 +306,32 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                           if (response['status'] == 200) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Successfully removed the Offer'),
+                              content: Text(
+                                'Successfully removed the Offer',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else if (response['status'] == 404) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Offer does not exist'),
+                              content: Text(
+                                'Offer does not exist',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Invalid request method'),
+                              content: Text(
+                                'Invalid request method',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           }
                           Navigator.pop(context);
@@ -275,7 +339,13 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
-                        child: Text('Reject'),
+                        child: const Text(
+                          'Reject',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ] else ...[
                       ElevatedButton(
@@ -289,17 +359,32 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                           if (response['status'] == 200) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Successfully removed the Offer'),
+                              content: Text(
+                                'Successfully removed the Offer',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else if (response['status'] == 404) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Offer does not exist'),
+                              content: Text(
+                                'Offer does not exist',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text('Invalid request method'),
+                              content: Text(
+                                'Invalid request method',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ));
                           }
                           Navigator.pop(context);
@@ -309,8 +394,7 @@ class _DetailOfferPageState extends State<DetailOfferPage> {
                         ),
                         child: const Text('Cancel',
                             style: TextStyle(
-                              color: Colors.white,
-                            )),
+                                color: Colors.white, fontFamily: 'Poppins')),
                       ),
                     ],
                   ],
