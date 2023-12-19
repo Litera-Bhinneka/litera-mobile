@@ -17,7 +17,6 @@ import 'package:http/http.dart' as http;
 import 'package:readmore/readmore.dart';
 import 'package:data_filters/data_filters.dart';
 
-
 class ShowReview extends StatefulWidget {
   const ShowReview({Key? key, required this.book_id}) : super(key: key);
 
@@ -26,6 +25,7 @@ class ShowReview extends StatefulWidget {
   @override
   State<ShowReview> createState() => _ShowReviewState(book_id: book_id);
 }
+
 
 class DataFetcher {
   static Future<List<Review>> fetchReviews(int bookId) async {
@@ -40,11 +40,14 @@ class DataFetcher {
     List<Review> listReview = [];
     for (var d in data) {
       if (d != null) {
+
         listReview.add(Review.fromJson(d));
+
       }
     }
     return listReview;
   }
+
 
   static Future<List<Book>> fetchBooks(int bookId) async {
     var url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$bookId/');
@@ -131,6 +134,7 @@ class _ShowReviewState extends State<ShowReview> {
 
     if (numericValues.length == 0) {
       numericValues = [1,2,3,4,5];
+
     }
 
     return numericValues;
@@ -143,7 +147,9 @@ class _ShowReviewState extends State<ShowReview> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MyHeader(height: 86,),
+            MyHeader(
+              height: 86,
+            ),
             FutureBuilder(
               future: combinedFuture,
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -156,7 +162,8 @@ class _ShowReviewState extends State<ShowReview> {
                     children: [
                       Text(
                         "Tidak ada data item.",
-                        style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                        style:
+                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -179,7 +186,8 @@ class _ShowReviewState extends State<ShowReview> {
 
                   // Display book details as the first item in the list
                   Widget bookDetails = Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     padding: const EdgeInsets.all(20.0),
                     child: SingleChildScrollView(
                     child: Column(
@@ -270,7 +278,8 @@ class _ShowReviewState extends State<ShowReview> {
                   List<Widget> reviewItems = List.generate(
                     reviews.length,
                     (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       padding: const EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -319,6 +328,7 @@ class _ShowReviewState extends State<ShowReview> {
                           const SizedBox(height: 15),
                           // 'dd MMMM yyyy "at" h:mm a'
                           Text("${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}")
+
                         ],
                       ),
                     ),
@@ -359,7 +369,4 @@ class _ShowReviewState extends State<ShowReview> {
       // )
     );
   }
-
-
-
 }
