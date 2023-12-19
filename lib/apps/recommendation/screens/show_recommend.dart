@@ -64,6 +64,7 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
     }
   }
 
+  bool isShown = false;
   @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -99,7 +100,7 @@ Widget build(BuildContext context) {
               (BuildContext context, int index) {
                 Recommendation recommendation = recommendations[index];
                 String date = DateFormat("dd MMMM yyyy 'at' h:mm a").format(recommendation.fields.recommendationDate);
-                
+                if (!(UserLoggedIn.user.role == "guest")){
                 return Card(
                   color: recommendation.fields.recommenderName == UserLoggedIn.user.username ? Color.fromARGB(255, 64, 183, 181) : Color(0xFFDDDDDD),
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -107,6 +108,24 @@ Widget build(BuildContext context) {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
+                        recommendation.fields.recommenderName == UserLoggedIn.user.username || UserLoggedIn.user.role == "admin"? 
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                              Divider(),
+                              GestureDetector(
+                                onTap: () async{
+                                  deleteObject(recommendation.pk);
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red, // Set your desired color
+                                  size: 24.0, // Set your desired size
+                                ),
+                              ),
+                            ]
+                          ,) :  Divider(),
                         const Row(
                           children: [
                             Expanded(
@@ -238,32 +257,32 @@ Widget build(BuildContext context) {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        recommendation.fields.recommenderName == UserLoggedIn.user.username ? 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Divider(),
-                              GestureDetector(
-                                onTap: () async{
-                                  deleteObject(recommendation.pk);
-                                  setState(() {});
-                                },
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.red, // Set your desired color
-                                  size: 24.0, // Set your desired size
-                                ),
-                              ),
-                            ]
-                          ,) : Container()
+                        
                       ],
                     ),
                   ),
                 );
+                }else{
+                  if (!isShown){
+                    isShown = true;
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Guests cannot view recommendations.",
+                            style: TextStyle(color: Color(0xFF105857), fontSize: 20),
+                          ),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    );
+                  }
+                }
               },
               childCount: recommendations.length,
             ),
-          ),
+          )
           ],
           );
         }
@@ -271,13 +290,22 @@ Widget build(BuildContext context) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
+        !(UserLoggedIn.user.role == "guest") ?
         showDialog<String>(
           context: context,
             builder: (BuildContext context) => RecommendationDialog(),
+        )
+        : 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Guests cannot perform this action.'),
+            duration: Duration(seconds: 2),
+          ),
         );
       },
       child: const Icon(Icons.add),
-      backgroundColor: Color.fromARGB(255, 64, 183, 181),
+      backgroundColor: Color(0xFF105857),
+      foregroundColor: Colors.white,
       shape: CircleBorder(),
     )
   );
