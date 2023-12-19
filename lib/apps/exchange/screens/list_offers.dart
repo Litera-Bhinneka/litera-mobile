@@ -68,11 +68,32 @@ class _ListOffersState extends State<ListOffers>
                 const MyHeader(height: 86),
                 TabBar(
                   controller: _tabController,
-                  // labelColor: Colors.blue,
+                  labelColor: const Color(0xFF105857),
+                  indicatorColor: const Color(0xFF105857),
                   unselectedLabelColor: Colors.black,
                   tabs: const [
-                    Tab(text: 'Sent'),
-                    Tab(text: 'Received'),
+                    Tab(
+                      child: Text(
+                        'Sent',
+                        style: TextStyle(
+                          fontSize: 16, // Set the desired font size
+                          fontWeight:
+                              FontWeight.bold, // Set the desired font weight
+                          fontFamily: 'Poppins', // Set the desired font family
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        'Received',
+                        style: TextStyle(
+                          fontSize: 16, // Set the desired font size
+                          fontWeight:
+                              FontWeight.bold, // Set the desired font weight
+                          fontFamily: 'Poppins', // Set the desired font family
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 Expanded(
@@ -87,6 +108,7 @@ class _ListOffersState extends State<ListOffers>
                               style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                               ),
                             ),
                           )
@@ -114,6 +136,7 @@ class _ListOffersState extends State<ListOffers>
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ],
@@ -132,20 +155,32 @@ class _ListOffersState extends State<ListOffers>
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                'Successfully removed the Offer'),
+                                              'Successfully removed the Offer',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else if (response['status'] == 404) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
-                                            content:
-                                                Text('Offer does not exist'),
+                                            content: Text(
+                                              'Offer does not exist',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
-                                            content:
-                                                Text('Invalid request method'),
+                                            content: Text(
+                                              'Invalid request method',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                         }
                                       },
@@ -188,6 +223,7 @@ class _ListOffersState extends State<ListOffers>
                               style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                               ),
                             ),
                           )
@@ -215,6 +251,7 @@ class _ListOffersState extends State<ListOffers>
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ],
@@ -234,7 +271,11 @@ class _ListOffersState extends State<ListOffers>
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                'Exchange successful. Your Inventory has been updated'),
+                                              'Exchange successful. Your Inventory has been updated',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else if (response['status'] == 404 &&
@@ -243,28 +284,40 @@ class _ListOffersState extends State<ListOffers>
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                'Inventory not found for the specified book and user'),
+                                              'Inventory not found for the specified book and user',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else if (response['status'] == 404) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                'The specified book is not found.'),
+                                              'The specified book is not found.',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
-                                            content:
-                                                Text('Invalid request method'),
+                                            content: Text(
+                                              'Invalid request method',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                         }
                                       },
                                       // child: Text('Accept'),
                                       icon: const Icon(
                                         Icons.check_circle,
-                                        color: Colors.green,
+                                        color: Color(0xFF105857),
                                       ),
                                       iconSize: 30,
                                     ),
@@ -280,21 +333,33 @@ class _ListOffersState extends State<ListOffers>
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                'Successfully removed the Offer'),
+                                              'Successfully removed the Offer',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else if (response['status'] == 404) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
-                                            content:
-                                                Text('Offer does not exist'),
+                                            content: Text(
+                                              'Offer does not exist',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                           setState(() {});
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
-                                            content:
-                                                Text('Invalid request method'),
+                                            content: Text(
+                                              'Invalid request method',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            ),
                                           ));
                                         }
                                       },
