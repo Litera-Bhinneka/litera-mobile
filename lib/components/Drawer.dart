@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litera_mobile/apps/catalog/screens/catalog.dart';
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
 
@@ -63,7 +64,9 @@ class _NavigationExampleState extends State<NavigationExample> {
       ),
       body: <Widget>[
         /// Catalog Page
-        ShowReview(book_id: 35),
+        BookPage(),
+
+        ///ShowReview(book_id: 35),
 
         /// Recommendation page
         ShowRecommendation(),

@@ -11,7 +11,6 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-
 class ShowReview extends StatefulWidget {
   const ShowReview({Key? key, required this.book_id}) : super(key: key);
 
@@ -28,11 +27,11 @@ class _ShowReviewState extends State<ShowReview> {
 
   Future<List<Review>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$book_id/');
+    var url =
+        Uri.parse('http://localhost:8000/review/get-review-json/$book_id/');
     var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
+      url,
+      headers: {"Content-Type": "application/json"},
     );
 
     // melakukan decode response menjadi bentuk json
@@ -41,20 +40,19 @@ class _ShowReviewState extends State<ShowReview> {
     // melakukan konversi data json menjadi object Product
     List<Review> list_review = [];
     for (var d in data) {
-        if (d != null) {
-            list_review.add(Review.fromJson(d));
-        }
+      if (d != null) {
+        list_review.add(Review.fromJson(d));
+      }
     }
     return list_review;
   }
 
   Future<List<Book>> fetchBook() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$book_id/');
+    var url = Uri.parse('http://localhost:8000/review/get-book-json/$book_id/');
     var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
+      url,
+      headers: {"Content-Type": "application/json"},
     );
 
     // melakukan decode response menjadi bentuk json
@@ -63,9 +61,9 @@ class _ShowReviewState extends State<ShowReview> {
     // melakukan konversi data json menjadi object Product
     List<Book> list_book = [];
     for (var d in data) {
-        if (d != null) {
-            list_book.add(Book.fromJson(d));
-        }
+      if (d != null) {
+        list_book.add(Book.fromJson(d));
+      }
     }
     return list_book;
   }
@@ -77,7 +75,9 @@ class _ShowReviewState extends State<ShowReview> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MyHeader(height: 86,),
+            MyHeader(
+              height: 86,
+            ),
             FutureBuilder(
               future: Future.wait([fetchProduct(), fetchBook()]),
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -90,7 +90,8 @@ class _ShowReviewState extends State<ShowReview> {
                     children: [
                       Text(
                         "Tidak ada data item.",
-                        style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                        style:
+                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -101,7 +102,8 @@ class _ShowReviewState extends State<ShowReview> {
 
                   // Display book details as the first item in the list
                   Widget bookDetails = Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,7 +111,8 @@ class _ShowReviewState extends State<ShowReview> {
                         // Assuming book.cover is a URL to the cover image
                         Image.network(
                           Uri.encodeFull(book[0].fields.imageLink),
-                          fit: BoxFit.contain, // Maintain aspect ratio without cropping
+                          fit: BoxFit
+                              .contain, // Maintain aspect ratio without cropping
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -129,7 +132,8 @@ class _ShowReviewState extends State<ShowReview> {
                     onPressed: () {
                       showDialog<String>(
                         context: context,
-                          builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
+                        builder: (BuildContext context) => ReviewDialog(
+                            book_id: book_id, book_title: book[0].fields.title),
                       );
                     },
                     child: const Text('Add Review'),
@@ -139,7 +143,8 @@ class _ShowReviewState extends State<ShowReview> {
                   List<Widget> reviewItems = List.generate(
                     reviews.length,
                     (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -152,7 +157,9 @@ class _ShowReviewState extends State<ShowReview> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          StarRating(rating: reviews[index].fields.reviewScore.toDouble()),
+                          StarRating(
+                              rating:
+                                  reviews[index].fields.reviewScore.toDouble()),
                           const SizedBox(height: 10),
                           Text("${reviews[index].fields.reviewText}")
                         ],
@@ -176,7 +183,4 @@ class _ShowReviewState extends State<ShowReview> {
       ),
     );
   }
-
-
-
 }
