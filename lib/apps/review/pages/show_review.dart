@@ -27,10 +27,10 @@ class ShowReview extends StatefulWidget {
   State<ShowReview> createState() => _ShowReviewState(book_id: book_id);
 }
 
-
 class DataFetcher {
   static Future<List<Review>> fetchReviews(int bookId) async {
-    var url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$bookId/');
+    var url = Uri.parse(
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$bookId/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -41,17 +41,15 @@ class DataFetcher {
     List<Review> listReview = [];
     for (var d in data) {
       if (d != null) {
-
         listReview.add(Review.fromJson(d));
-
       }
     }
     return listReview;
   }
 
-
   static Future<List<Book>> fetchBooks(int bookId) async {
-    var url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$bookId/');
+    var url = Uri.parse(
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$bookId/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -71,7 +69,7 @@ class DataFetcher {
 
 class _ShowReviewState extends State<ShowReview> {
   Future<List<dynamic>> combinedFuture = Future.value(List.empty());
-  List<int> ratingSelected= [1,2,3,4,5];
+  List<int> ratingSelected = [1, 2, 3, 4, 5];
   List<String> _selectedItems = [];
   late String bookTitle;
 
@@ -117,10 +115,11 @@ class _ShowReviewState extends State<ShowReview> {
   Future<void> loadCombinedData() async {
     setState(() {
       // Combine both book and review futures
-      combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
-                                    DataFetcher.fetchReviews(book_id)]);
+      combinedFuture = Future.wait(
+          [DataFetcher.fetchBooks(book_id), DataFetcher.fetchReviews(book_id)]);
     });
   }
+
   List<int> extractNumericValues(List<String> starRatings) {
     List<int> numericValues = [];
 
@@ -134,8 +133,7 @@ class _ShowReviewState extends State<ShowReview> {
     }
 
     if (numericValues.length == 0) {
-      numericValues = [1,2,3,4,5];
-
+      numericValues = [1, 2, 3, 4, 5];
     }
 
     return numericValues;
@@ -187,88 +185,109 @@ class _ShowReviewState extends State<ShowReview> {
 
                   // Display book details as the first item in the list
                   Widget bookDetails = Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    padding: const EdgeInsets.all(20.0),
-                    child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Assuming book.cover is a URL to the cover image
-                        Image.network(
-                          Uri.encodeFull(book[0].fields.imageLink),
-                          width: 200,
-                          height: 300,
-                          fit: BoxFit.contain, // Maintain aspect ratio without cropping
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          book[0].fields.title,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ReadMoreText(
-                          "${book[0].fields.description}",
-                          trimLines: 3,
-                          colorClickableText: Color.fromARGB(255, 63, 101, 240),
-                          trimMode: TrimMode.Line,
-                          trimCollapsedText: 'Read more',
-                          trimExpandedText: '\nRead less',
-                          lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
-                          moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.all(20.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text("${double.parse(averageRating.toStringAsFixed(1))}  ", style: TextStyle(fontSize: 16),),
-                            RatingBarIndicator(
-                                rating: averageRating,
-                                itemBuilder: (context, index) => FaIcon(
-                                  FontAwesomeIcons.solidStar,
-                                  color: Color.fromARGB(255, 255, 207, 63), // Adjust the opacity for partial stars
-                                  size: 20.0,
-                                ),
-                                itemCount: 5,
-                                itemSize: 18,
+                            // Assuming book.cover is a URL to the cover image
+                            Image.network(
+                              Uri.encodeFull(book[0].fields.imageLink),
+                              width: 200,
+                              height: 300,
+                              fit: BoxFit
+                                  .contain, // Maintain aspect ratio without cropping
                             ),
-                            Text("  (${reviews.length} ratings)", style: TextStyle(fontSize: 16),)
+                            const SizedBox(height: 16),
+                            Text(
+                              book[0].fields.title,
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ReadMoreText(
+                              "${book[0].fields.description}",
+                              trimLines: 3,
+                              colorClickableText:
+                                  Color.fromARGB(255, 63, 101, 240),
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: 'Read more',
+                              trimExpandedText: '\nRead less',
+                              lessStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 63, 101, 240)),
+                              moreStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 63, 101, 240)),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Text(
+                                  "${double.parse(averageRating.toStringAsFixed(1))}  ",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                RatingBarIndicator(
+                                  rating: averageRating,
+                                  itemBuilder: (context, index) => FaIcon(
+                                    FontAwesomeIcons.solidStar,
+                                    color: Color.fromARGB(255, 255, 207,
+                                        63), // Adjust the opacity for partial stars
+                                    size: 20.0,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 18,
+                                ),
+                                Text(
+                                  "  (${reviews.length} ratings)",
+                                  style: TextStyle(fontSize: 16),
+                                )
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                  )
-                  );
+                        ),
+                      ));
 
                   Widget addReviewButton = TextButton(
                     onPressed: () {
-                        if (!UserLoggedIn.user.isGuest){
-                          showDialog<String>(
-                            context: context,
-                              builder: (BuildContext context) => ReviewDialog(book_id: book_id,book_title: book[0].fields.title),
-                          ).then((result) {
+                      if (UserLoggedIn.user.role != "guest") {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => ReviewDialog(
+                              book_id: book_id,
+                              book_title: book[0].fields.title),
+                        ).then((result) {
                           if (result == null) {
                             setState(() {
                               // Your refresh logic
-                              if (AddedState.isAdded){
+                              if (AddedState.isAdded) {
                                 AddedState.isAdded = false;
-                                combinedFuture = Future.wait([DataFetcher.fetchBooks(book_id), 
-                                                              DataFetcher.fetchReviews(book_id)]);
+                                combinedFuture = Future.wait([
+                                  DataFetcher.fetchBooks(book_id),
+                                  DataFetcher.fetchReviews(book_id)
+                                ]);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text("Review added successfully!"),
-                                    ),
+                                    content: Text("Review added successfully!"),
+                                  ),
                                 );
                               }
                             });
                           }
                         });
-                      }else{
+                      } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage(title: "Login",)),
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage(
+                                    title: "Login",
+                                  )),
                         );
                       }
                     },
@@ -305,15 +324,17 @@ class _ShowReviewState extends State<ShowReview> {
                           ),
                           const SizedBox(height: 6),
                           RatingBarIndicator(
-                                rating: reviews[index].fields.reviewScore.toDouble(),
-                                itemBuilder: (context, index) => FaIcon(
-                                  FontAwesomeIcons.solidStar,
-                                  color: Color.fromARGB(255, 255, 207, 63), // Adjust the opacity for partial stars
-                                  size: 20.0,
-                                ),
-                                itemCount: 5,
-                                itemSize: 18,
+                            rating:
+                                reviews[index].fields.reviewScore.toDouble(),
+                            itemBuilder: (context, index) => FaIcon(
+                              FontAwesomeIcons.solidStar,
+                              color: Color.fromARGB(255, 255, 207,
+                                  63), // Adjust the opacity for partial stars
+                              size: 20.0,
                             ),
+                            itemCount: 5,
+                            itemSize: 18,
+                          ),
                           const SizedBox(height: 4),
                           Text(
                             "${reviews[index].fields.reviewSummary}",
@@ -326,27 +347,36 @@ class _ShowReviewState extends State<ShowReview> {
                           ReadMoreText(
                             "${reviews[index].fields.reviewText}",
                             trimLines: 3,
-                            colorClickableText: Color.fromARGB(255, 63, 101, 240),
+                            colorClickableText:
+                                Color.fromARGB(255, 63, 101, 240),
                             trimMode: TrimMode.Line,
                             trimCollapsedText: 'Read more',
                             trimExpandedText: '\nRead less',
-                            lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
-                            moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 63, 101, 240)),
+                            lessStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 63, 101, 240)),
+                            moreStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 63, 101, 240)),
                           ),
                           const SizedBox(height: 15),
                           // 'dd MMMM yyyy "at" h:mm a'
-                          Text("${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}")
-
+                          Text(
+                              "${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}")
                         ],
                       ),
                     ),
                   );
-                  List<Widget> filteredReviewItems = reviewItems
-                  .where((reviewWidget) {
-                    int reviewScore = reviews[reviewItems.indexOf(reviewWidget)].fields.reviewScore.toInt();
+                  List<Widget> filteredReviewItems =
+                      reviewItems.where((reviewWidget) {
+                    int reviewScore = reviews[reviewItems.indexOf(reviewWidget)]
+                        .fields
+                        .reviewScore
+                        .toInt();
                     return ratingSelected.contains(reviewScore);
-                  })
-                  .toList();
+                  }).toList();
 
                   // Combine book details and review items in the Column
                   return Column(
@@ -357,7 +387,6 @@ class _ShowReviewState extends State<ShowReview> {
                       ...filteredReviewItems,
                     ],
                   );
-                  
                 }
               },
             ),
