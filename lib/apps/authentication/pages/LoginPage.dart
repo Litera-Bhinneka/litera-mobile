@@ -249,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextButton(
                               onPressed: () async {
                                 final response = await request.login(
-                                    "https://litera-b06-tk.pbp.cs.ui.ac.id/auth/login/",
+                                    "http://localhost:8000/auth/login/",
                                     {
                                       'username': username,
                                       'password': password1,
@@ -263,7 +263,8 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MyHomePage(title: "LITERA")),
+                                        builder: (context) =>
+                                            MyHomePage(title: "LITERA")),
                                   );
                                   print(UserLoggedIn.user
                                       .username); // GET USERNAME OF LOGGED IN USER

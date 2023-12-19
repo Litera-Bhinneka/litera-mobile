@@ -2,158 +2,242 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
+import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-// TODO: Impor drawer yang sudah dibuat sebelumnya
+import 'package:http/http.dart' as http;
 
-class MyAdd extends StatefulWidget {
-    const MyAdd({super.key});
-
-    @override
-    State<MyAdd> createState() => _MyAddState();
+class RecommendationDialog extends StatefulWidget {
+  const RecommendationDialog({Key? key}) : super(key: key);
+  @override
+  _RecommendationDialogState createState() => _RecommendationDialogState();
 }
-
-class _MyAddState extends State<MyAdd> {
+double? initialDialogWidth = null;
+class _RecommendationDialogState extends State<RecommendationDialog> {
   final _formKey = GlobalKey<FormState>();
   String _book_title = "";
   String _another_book_title = "";
-  // int _book_id = 0;
-  // int _another_book_id = 0;
-  // String _book_image = "";
-  // String _another_book_image = "";
   String _description = "";
 
+  late List<String> userItems;
+  String username = UserLoggedIn.user.username;
+  Future<List<String>> fetchUserItem() async {
+    var url = Uri.parse(
+        'http://localhost:8000/recommendation/get-user-inventory-flutter/$username/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    List<String> items = List<String>.from(data['book_titles'].map((dynamic item) {
+      if (item != null) {
+        return item.toString();
+      }
+      return '';
+    }));
+    return items;
+  }
+  late List<DropdownMenuItem<String>> dropdownItems;
+  @override
+  void initState() {
+    super.initState();
+    userItems = [];
+    dropdownItems = [];
+    fetchUserItem().then((List<String> result) {
+      setState(() {
+        userItems = result;
+        dropdownItems = userItems.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList();
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    return Scaffold(
-      body: Form(
+    
+    if (initialDialogWidth == null) {
+      // Calculate the initial width only for the first time
+      initialDialogWidth = MediaQuery.of(context).size.width * 0.8;
+    }
+    return AlertDialog(
+      title: const Text('Write your recommendation'),
+      content: Container(
+        width: initialDialogWidth,
+        child: Form(
         key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Nama Produk",
-                  labelText: "Nama Produk",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _book_title = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Nama tidak boleh kosong!";
-                  }
-                  return null;
-                },
+            Text(
+              "Choose your book that you would like to make a recommendation for",
+              style: TextStyle(
+                fontSize: 13.0,
+                fontFamily: 'Poppins',
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Nama buku lainnya",
-                  labelText: "Nama buku lainnya",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                // TODO: Tambahkan variabel yang sesuai
-                onChanged: (String? value) {
-                  setState(() {
-                    _another_book_title = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Tidak boleh kosong!";
-                  }
-                  return null;
-                },
+            DropdownButtonFormField<String>(
+              items: dropdownItems.length < 2 ? null : dropdownItems,
+              onChanged: dropdownItems.length < 2 ? null: (String? value) {
+                setState(() {
+                  _book_title = value!;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Book title cannot be empty';
+                }else if (value == _another_book_title) {
+                  return 'You cannot recommend the same book';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Select Book Title',
+              ),
+              isExpanded: true,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              "Choose a book similar to your book",
+              style: TextStyle(
+                fontSize: 13.0,
+                fontFamily: 'Poppins',
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Deskripsi",
-                  labelText: "Deskripsi",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    // TODO: Tambahkan variabel yang sesuai
-                    _description = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Deskripsi tidak boleh kosong!";
-                  }
-                  return null;
-                },
+            DropdownButtonFormField<String>(
+              items: dropdownItems.length < 2 ? null : dropdownItems,
+              onChanged: dropdownItems.length < 2 ? null: (String? value) {
+                setState(() {
+                  _another_book_title = value!;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Book title cannot be empty';
+                }else if (value == _book_title) {
+                  return 'You cannot recommend the same book';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Select Book Title',
+              ),
+              isExpanded: true,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              "Description",
+              style: TextStyle(
+                fontSize: 13.0,
+                fontFamily: 'Poppins',
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.indigo),
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      print(_book_title);
-                        // Kirim ke Django dan tunggu respons
-                        // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                        final response = await request.postJson(
-                        "http://localhost:8000/recommendation/create-flutter/",
-                        jsonEncode(<String, String>{
-                            'recommender_name': UserLoggedIn.user.username,
-                            'book_title': _book_title,
-                            'another_book_title': _another_book_title,
-                            'description': _description,
-                            // TODO: Sesuaikan field data sesuai dengan aplikasimu
-                        }));
-                      print(_another_book_title);
-                        if (response['status'] == 'success') {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                            content: Text("Produk baru berhasil disimpan!"),
-                            ));
-                            Navigator.pop(context);
-                        } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                                content:
-                                    Text("Terdapat kesalahan, silakan coba lagi."),
-                            ));
-                        }
-                    }
-                  },
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'description',
+                labelText: dropdownItems.length < 2 ? 'You must atleast have 2 books' : 'Description',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _description = value;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Description cannot be empty';
+                }
+                return null;
+              },
+              enabled: dropdownItems.length >= 2,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                SizedBox(width: initialDialogWidth! / 4.5),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.indigo),
+                      ),
+                      onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                              final http.Response response = await http.post(
+                                  Uri.parse("http://localhost:8000/recommendation/create-flutter/"),
+                                  headers: <String, String>{
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: jsonEncode(<String, String>{
+                                    'recommender_name': UserLoggedIn.user.username,
+                                    'book_title': _book_title,
+                                    'another_book_title': _another_book_title,
+                                    'description': _description,
+                                  }),
+                                );
+                              if (response.statusCode == 200) {
+                              // Successful response
+                              final Map<String, dynamic> responseBody = jsonDecode(response.body);
+
+                              if (responseBody['status'] == 'success') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Recommendation berhasil disimpan!"),
+                                  ),
+                                );
+                                 
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ShowRecommendation()),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Terdapat kesalahan, silakan coba lagi."),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                      },
+                      child: const Text(
+                        "Post",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
+            
           ],
-          ),
         ),
       ),
+      )
     );
   }
 }
