@@ -290,7 +290,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text(
-                                        "An error occured, please try again."),
+                                        "Wrong password, please try again!"),
                                   ));
                                 }
                               },
