@@ -31,7 +31,7 @@ class ShowReview extends StatefulWidget {
 class DataFetcher {
   static Future<List<Review>> fetchReviews(int bookId) async {
     var url = Uri.parse(
-        'http://localhost:8000/review/get-review-json/$bookId/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-review-json/$bookId/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -50,7 +50,7 @@ class DataFetcher {
 
   static Future<List<Book>> fetchBooks(int bookId) async {
     var url = Uri.parse(
-        'http://localhost:8000/review/get-book-json/$bookId/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/review/get-book-json/$bookId/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -122,7 +122,7 @@ class _ShowReviewState extends State<ShowReview> {
   }
   Future<void> deleteReview(int objectId) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:8000/review/delete-review/$objectId/'),
+      Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/delete-review/$objectId/'),
     );
     if (response.statusCode == 200) {
       // Deletion successful
