@@ -102,7 +102,7 @@ class _AddBookState extends State<AddBook> {
                           },
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
-                              return "Description cannot be emptyg!";
+                              return "Description cannot be empty!";
                             }
                             return null;
                           },
