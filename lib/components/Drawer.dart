@@ -55,7 +55,7 @@ class _NavigationExampleState extends State<NavigationExample> {
           NavigationDestination(
             selectedIcon: Icon(Icons.recommend),
             icon: Icon(Icons.recommend_outlined),
-            label: 'Recommendation',
+            label: 'Suggestion',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.handshake),

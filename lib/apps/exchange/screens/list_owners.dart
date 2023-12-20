@@ -24,7 +24,7 @@ class _ListOwnersState extends State<ListOwners> {
           'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
     } else {
       url = Uri.parse(
-          'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/%/');
+          'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/%/');
     }
     var response = await http.get(
       url,
@@ -53,15 +53,37 @@ class _ListOwnersState extends State<ListOwners> {
               if (snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
               } else {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: Text(
-                      "There are no users with this book.",
-                      style: TextStyle(
-                          color: Color(0xFF105857),
-                          fontSize: 20,
-                          fontFamily: 'Poppins'),
-                    ),
+                if (snapshot.data!.isEmpty) {
+                  return Column(
+                    children: [
+                      const MyHeader(height: 86),
+                      const Expanded(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "There are no users with this book.",
+                            style: TextStyle(
+                                color: Color(0xFF105857),
+                                fontSize: 20,
+                                fontFamily: 'Poppins'),
+                          ),
+                        ],
+                      )),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Back',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 11),
+                    ],
                   );
                 } else {
                   return Column(
@@ -111,12 +133,12 @@ class _ListOwnersState extends State<ListOwners> {
                                                 .data![index].fields.username
                                                 .toString()
                                                 .length >
-                                            18) ...[
+                                            10) ...[
                                           Text(
                                             snapshot.data![index].fields
                                                     .username
                                                     .toString()
-                                                    .substring(1, 18) +
+                                                    .substring(1, 10) +
                                                 "...",
                                             style: const TextStyle(
                                               fontSize: 18.0,

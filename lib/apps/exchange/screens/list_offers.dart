@@ -165,10 +165,10 @@ class _ListOffersState extends State<ListOffers>
                                 ),
                                 const SizedBox(width: 8),
                                 if (currentOffer.fields.username1.length >
-                                    18) ...[
+                                    10) ...[
                                   Text(
                                     currentOffer.fields.username1
-                                            .substring(1, 18) +
+                                            .substring(1, 10) +
                                         "...",
                                     style: const TextStyle(
                                       fontSize: 18.0,
@@ -394,10 +394,10 @@ class _ListOffersState extends State<ListOffers>
                                     ),
                                     const SizedBox(width: 8),
                                     if (sentOffer.fields.username1.length >
-                                        18) ...[
+                                        10) ...[
                                       Text(
                                         sentOffer.fields.username1
-                                                .substring(1, 18) +
+                                                .substring(1, 10) +
                                             "...",
                                         style: const TextStyle(
                                           fontSize: 18.0,
@@ -523,10 +523,10 @@ class _ListOffersState extends State<ListOffers>
                                     ),
                                     const SizedBox(width: 8),
                                     if (receivedOffer.fields.username2.length >
-                                        18) ...[
+                                        10) ...[
                                       Text(
                                         receivedOffer.fields.username2
-                                                .substring(1, 18) +
+                                                .substring(1, 10) +
                                             "...",
                                         style: const TextStyle(
                                           fontSize: 18.0,
