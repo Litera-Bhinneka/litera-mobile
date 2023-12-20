@@ -302,28 +302,6 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
                                   ),
                                   SizedBox(height: 8),
                                 ],
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      childCount: recommendations.length,
-                    ),
-                  ),
-                );
-                }else{
-                  if (!isShown){
-                    isShown = true;
-                    return Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Guests cannot view recommendations.",
-                            style: TextStyle(color: Color(0xFF105857), fontSize: 20),
-                          ),
-                          SizedBox(height: 8),
-                        ],
                       ),
                     );
                   }
