@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
+import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/recommendation/models/Recommendation.dart';
 import 'package:litera_mobile/apps/recommendation/screens/add_recommendation.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
@@ -308,32 +309,57 @@ class _ShowRecommendationState extends State<ShowRecommendation> {
                       },
                       childCount: recommendations.length,
                     ),
-                  )
-                ],
-              );
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            !(UserLoggedIn.user.role == "guest")
-                ? showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => RecommendationDialog(),
-                  )
-                : ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Guests cannot perform this action.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-          },
-          child: const Icon(Icons.add),
-          backgroundColor: Color(0xFF105857),
-          foregroundColor: Colors.white,
-          shape: CircleBorder(),
-        ));
-  }
+                  ),
+                );
+                }else{
+                  if (!isShown){
+                    isShown = true;
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Guests cannot view recommendations.",
+                            style: TextStyle(color: Color(0xFF105857), fontSize: 20),
+                          ),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
+              childCount: recommendations.length,
+            ),
+          )
+          ],
+          );
+        }
+      },
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        !(UserLoggedIn.user.role == "guest") ?
+        showDialog<String>(
+          context: context,
+            builder: (BuildContext context) => RecommendationDialog(),
+        )
+        : 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginPage(
+                    title: "Login",
+                  )),
+        );
+      },
+      child: const Icon(Icons.add),
+      backgroundColor: Color(0xFF105857),
+      foregroundColor: Colors.white,
+      shape: CircleBorder(),
+    )
+  );
+}
 }
 
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
