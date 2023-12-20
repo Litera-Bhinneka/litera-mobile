@@ -22,7 +22,7 @@ class _InventoryTabState extends State<InventoryTab> {
 
   Future<List<InventoryBook>> fetchAvailableBooks() async {
     var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/catalog'); // Replace with your actual API URL
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/catalog/get-product/'); // Replace with your actual API URL
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -140,15 +140,15 @@ class _InventoryTabState extends State<InventoryTab> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AddInventoryDialog(bookId: widget.selectedBook!.id));
-          },
           child: const Icon(Icons.add),
           backgroundColor: Color(0xFF105857),
           foregroundColor: Colors.white,
           shape: CircleBorder(),
+          onPressed: () {
+            // showDialog<String>(
+            //     context: context,
+            //     builder: (BuildContext context) => AddInventoryDialog(bookId: widget.selectedBook!.id));
+          },
         ));
   }
 }
