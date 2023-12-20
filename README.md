@@ -1,3 +1,5 @@
+[![Build status](https://build.appcenter.ms/v0.1/apps/b79b42b8-2fdf-4b31-9bd4-8de38ab5a781/branches/main/badge)](https://appcenter.ms)
+
 # Litera - Mobile
 Aplikasi pertukaran buku cross platform dengan fitur daftar katalog buku, review buku, permintaan pertukaran buku secara online, rekomendasi buku, dan informasi pengguna. 
 
