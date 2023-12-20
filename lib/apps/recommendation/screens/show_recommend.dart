@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/authentication/models/User.dart';
+import 'package:litera_mobile/apps/authentication/pages/LoginPage.dart';
 import 'package:litera_mobile/apps/recommendation/models/Recommendation.dart';
 import 'package:litera_mobile/apps/recommendation/screens/add_recommendation.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
@@ -296,11 +297,12 @@ Widget build(BuildContext context) {
             builder: (BuildContext context) => RecommendationDialog(),
         )
         : 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Guests cannot perform this action.'),
-            duration: Duration(seconds: 2),
-          ),
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginPage(
+                    title: "Login",
+                  )),
         );
       },
       child: const Icon(Icons.add),
