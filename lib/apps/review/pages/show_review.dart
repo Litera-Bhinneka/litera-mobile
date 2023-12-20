@@ -124,9 +124,11 @@ class _ShowReviewState extends State<ShowReview> {
           [DataFetcher.fetchBooks(book_id), DataFetcher.fetchReviews(book_id)]);
     });
   }
+
   Future<void> deleteReview(int objectId) async {
     final response = await http.delete(
-      Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/review/delete-review/$objectId/'),
+      Uri.parse(
+          'https://litera-b06-tk.pbp.cs.ui.ac.id/review/delete-review/$objectId/'),
     );
     if (response.statusCode == 200) {
       // Deletion successful
@@ -166,86 +168,315 @@ class _ShowReviewState extends State<ShowReview> {
     return numericValues;
   }
 
- bool isFavorite = false;
+  bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(202, 209, 218, 1),
-      body: Column(
-        children: [
+        backgroundColor: Color.fromRGBO(202, 209, 218, 1),
+        body: Column(
+          children: [
             MyHeader(
               height: 86,
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: FutureBuilder(
-                future: combinedFuture,
-                builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text('Error loading data'));
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Column(
-                      children: [
-                        Text(
-                          "Tidak ada data item.",
-                          style:
-                              TextStyle(color: Color(0xff59A5D8), 
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.normal,
-                              fontSize: 20),
+                  future: combinedFuture,
+                  builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading data'));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return Column(
+                        children: [
+                          Text(
+                            "Tidak ada data item.",
+                            style: TextStyle(
+                                color: Color(0xff59A5D8),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20),
+                          ),
+                          SizedBox(height: 8),
+                        ],
+                      );
+                    } else {
+                      List<Review> reviews = snapshot.data![1] as List<Review>;
+                      List<Book> book = snapshot.data![0] as List<Book>;
+
+                      // Calculate total and average rating
+                      double totalRating = 0.0;
+                      double averageRating = 0.0;
+
+                      for (int index = 0; index < reviews.length; index++) {
+                        totalRating +=
+                            reviews[index].fields.reviewScore.toDouble();
+                      }
+
+                      if (reviews.length > 0) {
+                        averageRating = totalRating / reviews.length;
+                      }
+
+                      // Display book details as the first item in the list
+                      Widget bookDetails = Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Assuming book.cover is a URL to the cover image
+                                Image.network(
+                                  Uri.encodeFull(book[0].fields.imageLink),
+                                  width: 200,
+                                  height: 300,
+                                  fit: BoxFit
+                                      .contain, // Maintain aspect ratio without cropping
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  book[0].fields.title,
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                ReadMoreText(
+                                  "${book[0].fields.description}",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                  trimLines: 3,
+                                  colorClickableText:
+                                      Color.fromARGB(255, 63, 101, 240),
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: 'Read more',
+                                  trimExpandedText: '\nRead less',
+                                  lessStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 63, 101, 240)),
+                                  moreStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 63, 101, 240)),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${double.parse(averageRating.toStringAsFixed(1))}  ",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "Poppins",
+                                      ),
+                                    ),
+                                    RatingBarIndicator(
+                                      rating: averageRating,
+                                      itemBuilder: (context, index) => FaIcon(
+                                        FontAwesomeIcons.solidStar,
+                                        color: Color.fromARGB(255, 255, 207,
+                                            63), // Adjust the opacity for partial stars
+                                        size: 20.0,
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 18,
+                                    ),
+                                    Text(
+                                      "  (${reviews.length} ratings)",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w200),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.favorite,
+                                        color: isFavorite
+                                            ? Colors.red
+                                            : Colors.grey,
+                                        size: 32.0,
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          isFavorite = !isFavorite;
+                                        });
+
+                                        // Add or remove the book from the wishlist based on the button state
+                                        if (isFavorite) {
+                                          // Add the book to the wishlist
+                                          await addToWishlist(book[0].pk);
+                                          print('Book added to wishlist!');
+                                        } else {
+                                          // Remove the book from the wishlist
+                                          await removeFromWishlist(book[0].pk);
+                                          print('Book removed from wishlist!');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+
+                      Widget addReviewButton = TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF105857)), // Change the color as needed
                         ),
-                        SizedBox(height: 8),
-                      ],
-                    );
-                  } else {
-                    List<Review> reviews = snapshot.data![1] as List<Review>;
-                    List<Book> book = snapshot.data![0] as List<Book>;
+                        onPressed: () {
+                          if (UserLoggedIn.user.role != "guest") {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => ReviewDialog(
+                                  book_id: book_id,
+                                  book_title: book[0].fields.title),
+                            ).then((result) {
+                              if (result == null) {
+                                setState(() {
+                                  // Your refresh logic
+                                  if (AddedState.isAdded) {
+                                    AddedState.isAdded = false;
+                                    combinedFuture = Future.wait([
+                                      DataFetcher.fetchBooks(book_id),
+                                      DataFetcher.fetchReviews(book_id)
+                                    ]);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text("Review added successfully!"),
+                                      ),
+                                    );
+                                  }
+                                });
+                              }
+                            });
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage(
+                                        title: "Login",
+                                      )),
+                            );
+                          }
+                        },
+                        child: const Text(
+                          'Add Review',
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: Color(0xFFDDDDDD),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
 
-                    // Calculate total and average rating
-                    double totalRating = 0.0;
-                    double averageRating = 0.0;
+                      Widget filterButton = ElevatedButton(
+                        onPressed: _showMultiSelect,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF105857)), // Change the color as needed
+                        ),
+                        child: const Text(
+                          'Rating Filter',
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: Color(0xFFDDDDDD),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                      print(_selectedItems);
+                      ratingSelected = extractNumericValues(_selectedItems);
 
-                    for (int index = 0; index < reviews.length; index++) {
-                      totalRating += reviews[index].fields.reviewScore.toDouble();
-                    }
-
-                    if (reviews.length > 0) {
-                      averageRating = totalRating / reviews.length;
-                    }
-
-                    // Display book details as the first item in the list
-                    Widget bookDetails = Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        padding: const EdgeInsets.all(20.0),
-                        child: SingleChildScrollView(
+                      // Display review items for the remaining items in the list
+                      List<Widget> reviewItems = List.generate(
+                        reviews.length,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xFFDDDDDD),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Assuming book.cover is a URL to the cover image
-                              Image.network(
-                                Uri.encodeFull(book[0].fields.imageLink),
-                                width: 200,
-                                height: 300,
-                                fit: BoxFit
-                                    .contain, // Maintain aspect ratio without cropping
-                              ),
-                              const SizedBox(height: 16),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    UserLoggedIn.user.role == "admin"
+                                        ? GestureDetector(
+                                            onTap: () async {
+                                              deleteReview(reviews[index].pk);
+                                              setState(() {});
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowReview(
+                                                          book_id:
+                                                              BookState.bookId,
+                                                        )),
+                                              );
+                                            },
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors
+                                                  .red, // Set your desired color
+                                              size:
+                                                  24.0, // Set your desired size
+                                            ),
+                                          )
+                                        : Container(),
+                                  ]),
                               Text(
-                                book[0].fields.title,
+                                "${reviews[index].fields.reviewerName}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
-                                  fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins",
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              ReadMoreText(
-                                "${book[0].fields.description}",
+                              const SizedBox(height: 6),
+                              RatingBarIndicator(
+                                rating: reviews[index]
+                                    .fields
+                                    .reviewScore
+                                    .toDouble(),
+                                itemBuilder: (context, index) => FaIcon(
+                                  FontAwesomeIcons.solidStar,
+                                  color: Color.fromARGB(255, 255, 207,
+                                      63), // Adjust the opacity for partial stars
+                                  size: 20.0,
+                                ),
+                                itemCount: 5,
+                                itemSize: 18,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "${reviews[index].fields.reviewSummary}",
                                 style: const TextStyle(
                                   fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              ReadMoreText(
+                                "${reviews[index].fields.reviewText}",
+                                style: const TextStyle(
+                                  fontSize: 15,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w200,
                                 ),
@@ -266,306 +497,96 @@ class _ShowReviewState extends State<ShowReview> {
                                     fontWeight: FontWeight.bold,
                                     color: Color.fromARGB(255, 63, 101, 240)),
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Text(
-                                    "${double.parse(averageRating.toStringAsFixed(1))}  ",
-                                    style: TextStyle(fontSize: 16, fontFamily: "Poppins",),
-                                  ),
-                                  RatingBarIndicator(
-                                    rating: averageRating,
-                                    itemBuilder: (context, index) => FaIcon(
-                                      FontAwesomeIcons.solidStar,
-                                      color: Color.fromARGB(255, 255, 207,
-                                          63), // Adjust the opacity for partial stars
-                                      size: 20.0,
-                                    ),
-                                    itemCount: 5,
-                                    itemSize: 18,
-                                  ),
-                                  Text(
-                                    "  (${reviews.length} ratings)",
-                                    style: TextStyle(fontSize: 16, fontFamily: "Poppins", fontWeight: FontWeight.w200),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.favorite,
-                                      color: isFavorite ? Colors.red : Colors.grey,
-                                      size: 40.0,
-                                    ),
-                                      onPressed: () async {
-                                      setState(() {
-                                        isFavorite = !isFavorite;
-                                      });
-
-                                      // Add or remove the book from the wishlist based on the button state
-                                      if (isFavorite) {
-                                        // Add the book to the wishlist
-                                        await addToWishlist(book[0].pk);
-                                        print('Book added to wishlist!');
-                                      } else {
-                                        // Remove the book from the wishlist
-                                        await removeFromWishlist(book[0].pk);
-                                        print('Book removed from wishlist!');
-                                      }
-                                    },
-                                  ),
-                                ],
-                              )
+                              const SizedBox(height: 15),
+                              // 'dd MMMM yyyy "at" h:mm a'
+                              Text(
+                                  "${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal))
                             ],
                           ),
-                        ));
-
-                    Widget addReviewButton = TextButton(
-                      style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
-                            ),
-                      onPressed: () {
-                        if (UserLoggedIn.user.role != "guest") {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => ReviewDialog(
-                                book_id: book_id,
-                                book_title: book[0].fields.title),
-                          ).then((result) {
-                            if (result == null) {
-                              setState(() {
-                                // Your refresh logic
-                                if (AddedState.isAdded) {
-                                  AddedState.isAdded = false;
-                                  combinedFuture = Future.wait([
-                                    DataFetcher.fetchBooks(book_id),
-                                    DataFetcher.fetchReviews(book_id)
-                                  ]);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Review added successfully!"),
-                                    ),
-                                  );
-                                }
-                              });
-                            }
-                          });
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage(
-                                      title: "Login",
-                                    )),
-                          );
-                        }
-                      },
-                      child: const Text('Add Review', 
-                                        style: TextStyle(fontFamily: "Poppins", 
-                                                        fontSize: 16,
-                                                        color: Color(0xFFDDDDDD),
-                                                        fontWeight: FontWeight.bold),),
-                    );
-
-                    Widget filterButton = ElevatedButton(
-                      onPressed: _showMultiSelect,
-                      style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF105857)), // Change the color as needed
-                            ),
-                      child: const Text('Rating Filter', 
-                                        style: TextStyle(fontFamily: "Poppins", 
-                                                        fontSize: 16,
-                                                        color: Color(0xFFDDDDDD),
-                                                        fontWeight: FontWeight.bold),),
-                    );
-                    print(_selectedItems);
-                    ratingSelected = extractNumericValues(_selectedItems);
-
-                    // Display review items for the remaining items in the list
-                    List<Widget> reviewItems = List.generate(
-                      reviews.length,
-                      (index) => Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFDDDDDD),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                      );
+
+                      List<Widget> filteredReviewItems =
+                          reviewItems.where((reviewWidget) {
+                        int reviewScore =
+                            reviews[reviewItems.indexOf(reviewWidget)]
+                                .fields
+                                .reviewScore
+                                .toInt();
+                        return ratingSelected.contains(reviewScore);
+                      }).toList();
+
+                      Widget reviewPage;
+
+                      if (reviews.length == 0) {
+                        reviewPage = Column(
                           children: [
-                            Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                                UserLoggedIn.user.role == "admin" ?
-                                GestureDetector(
-                                  onTap: () async{
-                                    deleteReview(reviews[index].pk);
-                                    setState(() {});
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ShowReview(
-                                                book_id: BookState.bookId,
-                                              )
-                                        ),
-                                    );
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.red, // Set your desired color
-                                    size: 24.0, // Set your desired size
-                                  ),
-                                ) : Container(),
-                              ]
-                            ),
-                            Text(
-                              "${reviews[index].fields.reviewerName}",
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            RatingBarIndicator(
-                              rating:
-                                  reviews[index].fields.reviewScore.toDouble(),
-                              itemBuilder: (context, index) => FaIcon(
-                                FontAwesomeIcons.solidStar,
-                                color: Color.fromARGB(255, 255, 207,
-                                    63), // Adjust the opacity for partial stars
-                                size: 20.0,
-                              ),
-                              itemCount: 5,
-                              itemSize: 18,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "${reviews[index].fields.reviewSummary}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ReadMoreText(
-                              "${reviews[index].fields.reviewText}",
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w200,
+                            bookDetails,
+                            // addReviewButton,
+                            SizedBox(height: 8),
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 4),
+                              padding: const EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Color(0xFFDDDDDD)),
+                              // color: Color.fromARGB(255, 173, 175, 170), // Set the background color of the container
+                              child: Text(
+                                "No reviews yet, be the first to review!",
+                                style: TextStyle(
+                                  color: Colors.black, // Set the text color
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16,
                                 ),
-                              trimLines: 3,
-                              colorClickableText:
-                                  Color.fromARGB(255, 63, 101, 240),
-                              trimMode: TrimMode.Line,
-                              trimCollapsedText: 'Read more',
-                              trimExpandedText: '\nRead less',
-                              lessStyle: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 63, 101, 240)),
-                              moreStyle: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 63, 101, 240)),
-                            ),
-                            const SizedBox(height: 15),
-                            // 'dd MMMM yyyy "at" h:mm a'
-                            Text(
-                                "${DateFormat('dd MMMM yyyy').format(reviews[index].fields.reviewDate)} at ${DateFormat('h:mm a').format(reviews[index].fields.reviewDate)}",
-                                style: TextStyle(fontFamily: "Poppins", 
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.normal))
-                          ],
-                        ),
-                      ),
-                    );
-
-                    List<Widget> filteredReviewItems =
-                        reviewItems.where((reviewWidget) {
-                      int reviewScore = reviews[reviewItems.indexOf(reviewWidget)]
-                          .fields
-                          .reviewScore
-                          .toInt();
-                      return ratingSelected.contains(reviewScore);
-                    }).toList();
-
-                    
-
-                    Widget reviewPage;
-
-                    if (reviews.length == 0) {
-                      reviewPage = Column(
-                        children: [
-                          bookDetails,
-                          // addReviewButton,
-                          SizedBox(height: 8),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Color(0xFFDDDDDD)),
-                            // color: Color.fromARGB(255, 173, 175, 170), // Set the background color of the container
-                            child: Text(
-                              "No reviews yet, be the first to review!",
-                              style: TextStyle(
-                                color: Colors.black, // Set the text color
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16,
                               ),
                             ),
-                          ),
-                          SizedBox(height: 12),
-                        ],
-                      );
-                    } else {
-                      reviewPage = Column(
-                      children: [
-                          bookDetails,
-                          // addReviewButton,
-                          filterButton,
-                          SizedBox(height: 8),
-                          ...filteredReviewItems,
-                          const SizedBox(height: 25),
+                            SizedBox(height: 12),
                           ],
-                      );
-                    } 
-                    // Combine book details and review items in the Column
-                    return reviewPage;
-                  }
-                },
-              ),
+                        );
+                      } else {
+                        reviewPage = Column(
+                          children: [
+                            bookDetails,
+                            // addReviewButton,
+                            filterButton,
+                            SizedBox(height: 8),
+                            ...filteredReviewItems,
+                            const SizedBox(height: 25),
+                          ],
+                        );
+                      }
+                      // Combine book details and review items in the Column
+                      return reviewPage;
+                    }
+                  },
+                ),
               ),
             )
           ],
         ),
-        floatingActionButton: Stack(
-          children: [
-            Align(
+        floatingActionButton: Stack(children: [
+          Align(
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: FloatingActionButton(
-                
-              child: const Icon(Icons.arrow_back),
-              backgroundColor: Color(0xFF105857),
-              foregroundColor: Colors.white,
-              shape: CircleBorder(),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MyHomePage(title: "LITERA")),
-                );
-                
-              }
-            ),
+                  child: const Icon(Icons.arrow_back),
+                  backgroundColor: Color(0xFF105857),
+                  foregroundColor: Colors.white,
+                  shape: CircleBorder(),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(title: "LITERA")),
+                    );
+                  }),
             ),
           ),
           Align(
@@ -573,59 +594,56 @@ class _ShowReviewState extends State<ShowReview> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: FloatingActionButton(
-              onPressed: () {
-                if (UserLoggedIn.user.role != "guest"){
-                showDialog<String>(
-                  context: context,
-                    builder: (BuildContext context) => ReviewDialog(
-                      book_id: BookState.bookId,
-                    book_title: BookState.bookTitle
-                    ),
-                  ).then((result) {
-                        if (result == null) {
-                          setState(() {
-                            // Your refresh logic
-                            if (AddedState.isAdded) {
-                              AddedState.isAdded = false;
-                              combinedFuture = Future.wait([
-                                DataFetcher.fetchBooks(book_id),
-                                DataFetcher.fetchReviews(book_id)
-                              ]);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Review added successfully!"),
-                                ),
-                              );
-                            }
-                          });
+                onPressed: () {
+                  if (UserLoggedIn.user.role != "guest") {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => ReviewDialog(
+                          book_id: BookState.bookId,
+                          book_title: BookState.bookTitle),
+                    ).then((result) {
+                      if (result == null) {
+                        setState(() {
+                          // Your refresh logic
+                          if (AddedState.isAdded) {
+                            AddedState.isAdded = false;
+                            combinedFuture = Future.wait([
+                              DataFetcher.fetchBooks(book_id),
+                              DataFetcher.fetchReviews(book_id)
+                            ]);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Review added successfully!"),
+                              ),
+                            );
                           }
-                        });;
-                      }else{
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginPage(
-                                    title: "Login",
-                                  )),
-                          );
-                        }
-                      },
-
-              child: const Icon(Icons.add),
-              backgroundColor: Color(0xFF105857),
-              foregroundColor: Colors.white,
-              shape: CircleBorder(),
-            ),
+                        });
+                      }
+                    });
+                    ;
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(
+                                title: "Login",
+                              )),
+                    );
+                  }
+                },
+                child: const Icon(Icons.add),
+                backgroundColor: Color(0xFF105857),
+                foregroundColor: Colors.white,
+                shape: CircleBorder(),
+              ),
             ),
           ),
-            
-            ]
-      )
-    );
+        ]));
   }
-  
+
   Future<void> addToWishlist(int bookId) async {
-    final url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/add-wishlist/<int:book_id>'); 
+    final url = Uri.parse(
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/add-wishlist/<int:book_id>');
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
@@ -642,7 +660,8 @@ class _ShowReviewState extends State<ShowReview> {
   }
 
   Future<void> removeFromWishlist(int bookId) async {
-    final url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/<int:book_id>'); 
+    final url = Uri.parse(
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/<int:book_id>');
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
