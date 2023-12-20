@@ -74,7 +74,7 @@ class _AddInventoryDialogState extends State<AddInventoryDialog> {
                       ? () async {
                           final http.Response response = await http.post(
                             Uri.parse(
-                                'https://litera-b06-tk.pbp.cs.ui.ac.id/inventory/add-to-inventory-flutter/${widget.bookId}/'),
+                                'https://litera-b06-tk.pbp.cs.ui.ac.id/manage-user/add-to-inventory-flutter/${widget.bookId}/'),
                             headers: <String, String>{
                               'Content-Type': 'application/json',
                             },

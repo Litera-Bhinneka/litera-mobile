@@ -146,6 +146,7 @@ class _WishlistTabState extends State<WishlistTab> {
               children: [
                 const MyHeader(height: 86),
                 const SizedBox(height: 11),
+
                 Text(
                   'Available Books:',
                   style: const TextStyle(
