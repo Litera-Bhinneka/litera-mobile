@@ -24,7 +24,7 @@ class _ListOwnersState extends State<ListOwners> {
           'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/${UserLoggedIn.user.username}/');
     } else {
       url = Uri.parse(
-          'http://localhost:8000/exchange/get-owners-flutter/${widget.id}/%/');
+          'https://litera-b06-tk.pbp.cs.ui.ac.id/exchange/get-owners-flutter/${widget.id}/%/');
     }
     var response = await http.get(
       url,
