@@ -240,41 +240,69 @@ class _BookPageState extends State<BookPage> {
                             'Year Of Published: ${book.fields.yearOfPublished}',
                             style: TextStyle(fontFamily: "Poppins")),
                         const SizedBox(height: 8),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xFF105857))),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListOwners(id: book.pk),
-                              ),
-                            );
-                          },
-                          child: const Text('List Owners',
-                              style: TextStyle(
-                                  color: Colors.white, fontFamily: "Poppins")),
-                        ),
-                        if (UserLoggedIn.user.role == "admin")
-                          SizedBox(height: 16),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xFF105857))),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditBookPage(
-                                  bookId: book.pk,
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Color(0xFF105857),
+                                ),
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  EdgeInsets.symmetric(horizontal: 16.0),
                                 ),
                               ),
-                            );
-                          },
-                          child: const Text('Edit',
-                              style: TextStyle(
-                                  color: Colors.white, fontFamily: "Poppins")),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListOwners(id: book.pk),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'List Owners',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                                width: 8.0), // Jarak sedikit di antara tombol
+                            if (UserLoggedIn.user.role == "admin")
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    Color(0xFF105857),
+                                  ),
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    EdgeInsets.symmetric(horizontal: 16.0),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditBookPage(
+                                        bookId: book.pk,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Edit',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Poppins",
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ),
