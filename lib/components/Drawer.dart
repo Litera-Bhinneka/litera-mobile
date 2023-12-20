@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:litera_mobile/apps/catalog/screens/catalog.dart';
 import 'package:litera_mobile/apps/exchange/screens/list_offers.dart';
 import 'package:litera_mobile/apps/exchange/screens/list_owners.dart';
+import 'package:litera_mobile/apps/profile/screens/profile_widget.dart';
 
 import 'package:litera_mobile/apps/recommendation/screens/show_recommend.dart';
 import 'package:litera_mobile/apps/review/pages/show_review.dart';
@@ -84,7 +85,7 @@ class _NavigationExampleState extends State<NavigationExample> {
         page = ListOffers(); // Exchange page
         break;
       case 3:
-        page = SampleHomePage(); // Profile page
+        page = ProfileWidget(); // Profile page
         break;
       case 4:
         page = ShowReview(book_id: Status.selectedBookId); // ShowReview page

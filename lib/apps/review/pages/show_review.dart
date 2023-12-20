@@ -20,6 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:readmore/readmore.dart';
 import 'package:data_filters/data_filters.dart';
+import 'package:litera_mobile/apps/profile/screens/wishlist_tab.dart';
+import 'package:litera_mobile/apps/profile/models/WishlistBook.dart';
 
 class ShowReview extends StatefulWidget {
   const ShowReview({Key? key, required this.book_id}) : super(key: key);
@@ -164,6 +166,7 @@ class _ShowReviewState extends State<ShowReview> {
     return numericValues;
   }
 
+ bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,7 +287,30 @@ class _ShowReviewState extends State<ShowReview> {
                                   Text(
                                     "  (${reviews.length} ratings)",
                                     style: TextStyle(fontSize: 16, fontFamily: "Poppins", fontWeight: FontWeight.w200),
-                                  )
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: isFavorite ? Colors.red : Colors.grey,
+                                      size: 40.0,
+                                    ),
+                                      onPressed: () async {
+                                      setState(() {
+                                        isFavorite = !isFavorite;
+                                      });
+
+                                      // Add or remove the book from the wishlist based on the button state
+                                      if (isFavorite) {
+                                        // Add the book to the wishlist
+                                        await addToWishlist(book[0].pk);
+                                        print('Book added to wishlist!');
+                                      } else {
+                                        // Remove the book from the wishlist
+                                        await removeFromWishlist(book[0].pk);
+                                        print('Book removed from wishlist!');
+                                      }
+                                    },
+                                  ),
                                 ],
                               )
                             ],
@@ -596,5 +622,39 @@ class _ShowReviewState extends State<ShowReview> {
             ]
       )
     );
-  }  
+  }
+  
+  Future<void> addToWishlist(int bookId) async {
+    final url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/add-wishlist/<int:book_id>'); 
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"bookId": bookId}),
+    );
+
+    if (response.statusCode == 200) {
+      // Wishlist addition successful
+      print('Book added to wishlist successfully');
+    } else {
+      // Handle the error
+      print('Failed to add book to wishlist');
+    }
+  }
+
+  Future<void> removeFromWishlist(int bookId) async {
+    final url = Uri.parse('https://litera-b06-tk.pbp.cs.ui.ac.id/remove-wishlist/<int:book_id>'); 
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"bookId": bookId}),
+    );
+
+    if (response.statusCode == 200) {
+      // Wishlist removal successful
+      print('Book removed from wishlist successfully');
+    } else {
+      // Handle the error
+      print('Failed to remove book from wishlist');
+    }
+  }
 }

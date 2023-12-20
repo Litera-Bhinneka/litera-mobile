@@ -24,7 +24,7 @@ class _RecommendationDialogState extends State<RecommendationDialog> {
   String username = UserLoggedIn.user.username;
   Future<List<String>> fetchUserItem() async {
     var url = Uri.parse(
-        'https://litera-b06-tk.pbp.cs.ui.ac.id/recommendation/get-user-inventory-flutter/$username/');
+        'https://litera-b06-tk.pbp.cs.ui.ac.id/recommendation/get-user-inventory$username');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
