@@ -210,7 +210,7 @@ class _InventoryColumnState extends State<InventoryColumn> {
       String title, List<InventoryBook> inventory, List<InventoryBook> target) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    if (title.length > 18) title = title.substring(1, 18) + "...'s Inventory";
+    if (title.length > 14) title = title.substring(1, 14) + "...'s Inventory";
     return Expanded(
       child: Column(
         children: [
