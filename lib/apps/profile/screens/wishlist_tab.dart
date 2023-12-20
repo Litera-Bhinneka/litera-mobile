@@ -210,9 +210,7 @@ class _WishlistTabState extends State<WishlistTab> {
   // }
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Blank Page'),
-      ),
+      backgroundColor: const Color.fromRGBO(202, 209, 218, 1),
       body: Center(
         child: Text(
           'This is a blank page.',
